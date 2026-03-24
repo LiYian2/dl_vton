@@ -24,14 +24,18 @@ echo "#!/bin/bash" > run_gpu.sh
 echo "cd ComfyUI" >> run_gpu.sh
 echo "source {Path_Of_Miniconda3}/miniconda3/bin/activate py_312" >> run_gpu.sh # Please fill in the path
 echo "module load cuda/12.8" >> run_gpu.sh
-echo "python main.py --preview-method auto"
+echo "python main.py --listen 0.0.0.0 --port 8188"
 chmod +x run_gpu.sh
 ```
 
 ## 3. Run
+For Terminal 1 (Run the task, start by `ssh dsaa2012_017@hpc2login.hpc.hkust-gz.edu.cn`)
 ```bash
 srun -p debug -n 4 --mem=16G --gres=gpu:1 --time=00:30:00 --pty bash
+hostname   # 记住这个，比如 gpu3-9
 cd path/conating/run_gpu.sh
 chmod +x run_gpu.sh
 ./run_gpu.sh
 ```
+For Terminal 2 (For port, start by `ssh -L 18188:{host_name}:8188 dsaa2012_017@hpc2login.hpc.hkust-gz.edu.cn`)
+Then open `http://localhost:18188` in local browser.
