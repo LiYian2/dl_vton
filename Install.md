@@ -24,8 +24,14 @@ echo "#!/bin/bash" > run_gpu.sh
 echo "cd ComfyUI" >> run_gpu.sh
 echo "source {Path_Of_Miniconda3}/miniconda3/bin/activate py_312" >> run_gpu.sh # Please fill in the path
 echo "module load cuda/12.8" >> run_gpu.sh
-echo "python main.py --listen 0.0.0.0 --port 8188"
+echo "python main.py --listen 0.0.0.0 --port 8188 --enable-manager"
 chmod +x run_gpu.sh
+
+echo "#!/bin/bash" > run_cpu.sh
+echo "cd ComfyUI" >> run_cpu.sh
+echo "source {Path_Of_Miniconda3}/miniconda3/bin/activate py_312" >> run_gpu.sh # Please fill in the path
+echo "python main.py --listen 0.0.0.0 --port 8188 --cpu --enable-manager"
+chmod +x run_cpu.sh
 ```
 
 ## 3. Run
