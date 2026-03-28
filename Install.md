@@ -37,7 +37,7 @@ chmod +x run_cpu.sh
 ## 3. Run
 For Terminal 1 (Run the task, start by `ssh dsaa2012_017@hpc2login.hpc.hkust-gz.edu.cn`)
 ```bash
-srun -p debug -n 4 --mem=16G --gres=gpu:1 --time=00:30:00 --pty bash
+srun -p debug -n 8 --mem=32G --gres=gpu:1 --time=00:30:00 --pty bash
 hostname   # 记住这个，比如 gpu3-9
 cd path/conating/run_gpu.sh
 chmod +x run_gpu.sh
