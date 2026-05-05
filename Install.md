@@ -42,6 +42,9 @@ hostname   # 记住这个，比如 gpu3-9
 cd path/conating/run_gpu.sh
 chmod +x run_gpu.sh
 ./run_gpu.sh
+# or nohup ./run_gpu.sh 2>&1 &
+# exit
+pkill -f run_gpu.sh
 ```
 For Terminal 2 (For port, start by `ssh -L 18188:{host_name}:8188 dsaa2012_017@hpc2login.hpc.hkust-gz.edu.cn`)
 Then open `http://localhost:18188` in local browser.
