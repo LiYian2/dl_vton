@@ -1,5 +1,5 @@
 # Install Instructions
-This file serves as the installation instruction on our Virtual Try On project on HKUST(GZ) HPC2. We do not guanrantee that it works on other platform.
+This file serves as the installation instruction on our Virtual Try On project on HKUST(GZ) HPC2. We do not guanrantee that it works on other platform. CUDA 12.8 is used for the project.
 ## 1. Install Miniconda
 ```bash
 curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -7,8 +7,11 @@ bash ~/Miniconda3-latest-Linux-x86_64.sh
 ```
 After installing Miniconda3 successfully, restart the bash, then
 ```bash
-conda create -n py_312 python=3.12 -y
+conda env create -f environment.yml
 conda activate py_312
+# The below installation would cost a long time. Please makesure cuda is available.
+pip install llama-cpp-python \
+  --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu128
 ```
 ## 2. Install ComfyUI
 ```bash
