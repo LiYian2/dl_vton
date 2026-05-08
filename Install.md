@@ -6,6 +6,13 @@ curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash ~/Miniconda3-latest-Linux-x86_64.sh
 ```
 After installing Miniconda3 successfully, restart the bash, then
+
+```bash
+conda create py_312 python=3.12 -y
+conda activate py_312
+```
+Below is the command to get the environment export by conda, but we are not sure whether it works or not. If you don't want to use this, just skip this.
+
 ```bash
 conda env create -f environment.yml
 conda activate py_312
