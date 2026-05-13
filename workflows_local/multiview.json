@@ -1,0 +1,604 @@
+{
+  "221": {
+    "inputs": {
+      "samples": [
+        "252",
+        0
+      ],
+      "vae": [
+        "241",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE解码"
+    }
+  },
+  "228": {
+    "inputs": {
+      "conditioning": [
+        "263",
+        0
+      ],
+      "latent": [
+        "229",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "参考Latent"
+    }
+  },
+  "229": {
+    "inputs": {
+      "pixels": [
+        "412",
+        0
+      ],
+      "vae": [
+        "241",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE编码"
+    }
+  },
+  "236": {
+    "inputs": {
+      "width": [
+        "412",
+        3
+      ],
+      "height": [
+        "412",
+        4
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyFlux2LatentImage",
+    "_meta": {
+      "title": "空Latent图像（Flux2）"
+    }
+  },
+  "237": {
+    "inputs": {
+      "conditioning": [
+        "248",
+        0
+      ],
+      "latent": [
+        "229",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "参考Latent"
+    }
+  },
+  "241": {
+    "inputs": {
+      "vae_name": "flux2-vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "加载VAE"
+    }
+  },
+  "242": {
+    "inputs": {
+      "model": [
+        "254",
+        0
+      ]
+    },
+    "class_type": "ModelPassThrough",
+    "_meta": {
+      "title": "ModelPass"
+    }
+  },
+  "248": {
+    "inputs": {
+      "text": [
+        "435",
+        0
+      ],
+      "clip": [
+        "257",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP文本编码"
+    }
+  },
+  "250": {
+    "inputs": {
+      "method": "mkl",
+      "strength": 0,
+      "multithread": true,
+      "image_ref": [
+        "412",
+        0
+      ],
+      "image_target": [
+        "221",
+        0
+      ]
+    },
+    "class_type": "ColorMatch",
+    "_meta": {
+      "title": "Color Match"
+    }
+  },
+  "252": {
+    "inputs": {
+      "seed": 1019699698313629,
+      "steps": 10,
+      "cfg": 1,
+      "sampler_name": "lcm",
+      "scheduler": "normal",
+      "denoise": 1,
+      "model": [
+        "242",
+        0
+      ],
+      "positive": [
+        "421",
+        0
+      ],
+      "negative": [
+        "420",
+        0
+      ],
+      "latent_image": [
+        "236",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "K采样器"
+    }
+  },
+  "254": {
+    "inputs": {
+      "lora_name": "F2K_9bb-一致性consist_20260225.safetensors",
+      "strength_model": 0.5,
+      "model": [
+        "259",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoRA加载器（仅模型）"
+    }
+  },
+  "256": {
+    "inputs": {
+      "amount": 0,
+      "image": [
+        "250",
+        0
+      ]
+    },
+    "class_type": "ImageCASharpening+",
+    "_meta": {
+      "title": "🔧 Image Contrast Adaptive Sharpening"
+    }
+  },
+  "257": {
+    "inputs": {
+      "clip_name": "qwen_3_8b_fp8mixed.safetensors",
+      "type": "flux2",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "加载CLIP"
+    }
+  },
+  "259": {
+    "inputs": {
+      "unet_name": "flux-2-klein/Flux2-Klein-9B-True-v2-bf16.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNet加载器"
+    }
+  },
+  "263": {
+    "inputs": {
+      "text": "low quality, blurry, plastic skin",
+      "clip": [
+        "257",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP文本编码"
+    }
+  },
+  "265": {
+    "inputs": {
+      "image": "21_16.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "加载图像(person)"
+    }
+  },
+  "267": {
+    "inputs": {
+      "images": [
+        "256",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "预览图像"
+    }
+  },
+  "279": {
+    "inputs": {
+      "prompt": [
+        "320",
+        0
+      ],
+      "start_index": 0,
+      "max_rows": 1000,
+      "remove_empty_lines": true
+    },
+    "class_type": "easy promptLine",
+    "_meta": {
+      "title": "提示词行"
+    }
+  },
+  "316": {
+    "inputs": {
+      "prefix": "",
+      "suffix": "",
+      "input": [
+        "410",
+        0
+      ]
+    },
+    "class_type": "SomethingToString",
+    "_meta": {
+      "title": "Something To String"
+    }
+  },
+  "317": {
+    "inputs": {
+      "anything": [
+        "316",
+        0
+      ]
+    },
+    "class_type": "easy cleanGpuUsed",
+    "_meta": {
+      "title": "清理显存占用"
+    }
+  },
+  "320": {
+    "inputs": {
+      "text": "View 1: Front view, full body, lens: 85mm, f/4.0, azimuth 0°, elevation 0°, standing relaxed with hands in pockets, gaze fixed straight ahead (world 0°), hair static, solid gray cyclorama wall with slight floor reflection, key light from world left-front 45° at 2m, 5600K softbox, fill from right rear at 1/2 power, dof: sharp figure, background slightly soft at f/4, centered composition, feet aligned with frame bottom\n\nView 2: Front-left 45°, full body, lens: 85mm, f/4.0, azimuth -45°, elevation 0°, standing relaxed with hands in pockets, gaze fixed straight ahead (world 0°), hair static, solid gray cyclorama wall with slight floor reflection, key light from world left-front 45° at 2m, 5600K softbox, fill from right rear at 1/2 power, dof: sharp figure, background slightly soft at f/4, centered composition, feet aligned with frame bottom\n\nView 3: Left 90°, full body, lens: 85mm, f/4.0, azimuth -90°, elevation 0°, standing relaxed with hands in pockets, gaze fixed straight ahead (world 0°), hair static, solid gray cyclorama wall with slight floor reflection, key light from world left-front 45° at 2m, 5600K softbox, fill from right rear at 1/2 power, dof: sharp figure, background slightly soft at f/4, centered composition, feet aligned with frame bottom\n\nView 4: Back-left 135°, full body, lens: 85mm, f/4.0, azimuth 135°, elevation 0°, standing relaxed with hands in pockets, gaze fixed straight ahead (world 0°), hair static, solid gray cyclorama wall with slight floor reflection, key light from world left-front 45° at 2m, 5600K softbox, fill from right rear at 1/2 power, dof: sharp figure, background slightly soft at f/4, centered composition, feet aligned with frame bottom\n\nView 5: Back 180°, full body, lens: 85mm, f/4.0, azimuth 180°, elevation 0°, standing relaxed with hands in pockets, gaze fixed straight ahead (world 0°), hair static, solid gray cyclorama wall with slight floor reflection, key light from world left-front 45° at 2m, 5600K softbox, fill from right rear at 1/2 power, dof: sharp figure, background slightly soft at f/4, centered composition, feet aligned with frame bottom\n\nView 6: Back-right 225°, full body, lens: 85mm, f/4.0, azimuth -135°, elevation 0°, standing relaxed with hands in pockets, gaze fixed straight ahead (world 0°), hair static, solid gray cyclorama wall with slight floor reflection, key light from world left-front 45° at 2m, 5600K softbox, fill from right rear at 1/2 power, dof: sharp figure, background slightly soft at f/4, centered composition, feet aligned with frame bottom\n\nView 7: Right 270°, full body, lens: 85mm, f/4.0, azimuth -90°, elevation 0°, standing relaxed with hands in pockets, gaze fixed straight ahead (world 0°), hair static, solid gray cyclorama wall with slight floor reflection, key light from world left-front 45° at 2m, 5600K softbox, fill from right rear at 1/2 power, dof: sharp figure, background slightly soft at f/4, centered composition, feet aligned with frame bottom\n\nView 8: Front-right 315°, full body, lens: 85mm, f/4.0, azimuth -45°, elevation 0°, standing relaxed with hands in pockets, gaze fixed straight ahead (world 0°), hair static, solid gray cyclorama wall with slight floor reflection, key light from world left-front 45° at 2m, 5600K softbox, fill from right rear at 1/2 power, dof: sharp figure, background slightly soft at f/4, centered composition, feet aligned with frame bottom",
+      "anything": [
+        "317",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "展示任何"
+    }
+  },
+  "382": {
+    "inputs": {
+      "text": "View 8: Front-right 315°, full body, lens: 85mm, f/4.0, azimuth -45°, elevation 0°, standing relaxed with hands in pockets, gaze fixed straight ahead (world 0°), hair static, solid gray cyclorama wall with slight floor reflection, key light from world left-front 45° at 2m, 5600K softbox, fill from right rear at 1/2 power, dof: sharp figure, background slightly soft at f/4, centered composition, feet aligned with frame bottom",
+      "anything": [
+        "279",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "展示任何"
+    }
+  },
+  "408": {
+    "inputs": {
+      "filename_prefix": "multiview_web/21_16/view",
+      "images": [
+        "256",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "保存图像"
+    }
+  },
+  "409": {
+    "inputs": {
+      "value": "你是一名电影级视觉导演 + 3D 多视角生成专家，精通多视角一致性、相机矩阵与光影物理。\n\n【任务】\n根据输入的单张人物写真图片以及单张衣服图片，生成 8 段多视角提示词，用于图像生成模型（如 SDXL + Multi-View ControlNet），输出同一人物、同一姿态、同一环境、同一光照下的不同相机视角图像。\n\n目标是构建一组：\n\n视角连续（环绕主体旋转）你是一名电影级视觉导演 + 3D 多视角生成专家，精通多视角一致性、材质反推与物理光照。\n\n【任务】\n根据输入的两张人物写真图片：\n\n图片 A：人物整体（半身或全身）写真，包含姿态、环境、整体光照\n\n图片 B：同一人物的上半身衣服特写（纯衣服细节，可包含少量皮肤/颈部）\n\n生成 8 段多视角提示词，用于图像生成模型（如 SDXL + Multi-View ControlNet），输出同一人物、同一姿态、同一套服装（精细材质一致）、同一环境、同一世界光照下的不同相机视角图像。\n\n目标是构建一组：\n\n视角连续（环绕主体旋转）\n\n姿态固定（动作、表情、头发动态不变）\n\n服装材质完全一致（纹理、图案、缝线、褶皱规律）\n\n光线统一（世界坐标系中的光源方向固定）\n\n风格稳定（影调、对比、色调一致）\n\n的高端多视角写真序列。\n\n【人物与服装一致性锁定（必须执行）】\n\n从图片 A 锁定：\n\n人脸（五官结构 / 脸型 / 气质）\n\n发型（长度 / 卷度 / 分缝 / 发量 / 动态方向）\n\n妆容（风格 / 浓淡 / 色系）\n\n身体姿势（全身姿态、手部位置、视线方向）—— 严格固定，不得随视角改变\n\n配饰（包 / 手机 / 饰品 / 鞋，如有）\n\n从图片 B 锁定（覆盖图片 A 中衣服可能模糊或光照干扰的部分）：\n\n服装款式（领型 / 肩型 / 袖长 / 腰线 / 下摆）\n\n服装颜色（精确 RGB 倾向 / 色相 / 饱和度 / 明度）\n\n服装材质（棉 / 丝 / 皮革 / 针织 / 牛仔 / 亮片 / 蕾丝等，及其表面反光特性）\n\n纹理与图案（条纹 / 格纹 / 印花 / logo / 刺绣的位置、大小、重复规律）\n\n剪裁细节（缝线颜色与走向、纽扣 / 拉链 / 口袋的形状与位置）\n\n褶皱与垂坠规律（从特写图中推断布料软硬及自然悬垂形态）\n\n严禁：\n\n换脸 / 换发型 / 改妆容\n\n改变姿势或视线世界方向\n\n改变衣服的任何细节（包括图案走向、纽扣位置、材质反光）\n\n引入图片 B 中的光照（图片 B 的光线仅用于看清纹理，最终光照以图片 A 为准）\n\n【双图信息融合规则（隐式完成）】\n\n环境特征：仅从图片 A 提取\n\n空间类型（建议使用纯色无影墙 / 无缝背景纸 / 简单纹理墙面，避免视角矛盾）\n\n地面材质（磨砂亚克力 / 木地板 / 水泥地）\n\n背景元素（若有标志物，需明确其 3D 位置；否则统一为单色）\n\n光线特征（世界坐标系固定）：仅从图片 A 推断\n\n主光方向（绝对方向：前 / 左前 / 右侧 / 左后等）\n\n补光方向与强度比\n\n光质（柔光 / 硬光）\n\n色温（开尔文值）\n\n轮廓光 / 背景光是否存在\n\n衣服外观：完全以图片 B 为基准，覆盖图片 A 中衣服可能因光照或分辨率产生的偏差\n\n材质反光特性需配合图片 A 的光照重新计算（例如：皮革在左侧光下应有高光在左侧，右侧背光面暗）\n\n图案在身体表面的透视映射需保持物理正确（条纹随身体曲面弯曲）\n\n【多视角生成规则】\n\n每一段必须包含：\n\nview type（视角类型：方位角 + 俯仰角）\n\ncamera distance（相机距离：近 / 中 / 全，所有视角一致）\n\nlens（焦段 + 光圈，所有视角一致，建议 85mm f/4）\n\nsubject orientation（主体朝向相对相机静止，相机环绕）\n\nenvironment（环境在视角变化后的自然延续，背景为无影墙或简单场景）\n\nlighting（相对于世界坐标的光线描述，阴影随视角变化）\n\ndepth of field（景深统一）\n\ncomposition（构图统一，如居中全身或半身）\n\n【视角递进结构（8个视角，水平环绕）】\n\n按以下顺序，方位角递增，俯仰角固定 0°（可额外增加 1 个俯视 + 1 个仰视，共 10 个，但格式保持 8 个，若需 10 个请明确）：\n\nView 1：Front (0°) —— 姿态与图片 A 尽可能一致\nView 2：Front-left 45°\nView 3：Left 90°\nView 4：Back-left 135°\nView 5：Back 180°\nView 6：Back-right 225°\nView 7：Right 270°\nView 8：Front-right 315°\n\n可选俯仰变化（若需要，可替换最后两个视角为俯视和仰视，并注明）。\n\n【姿态与视线固定规则】\n\n全身姿态完全固定：站立或静坐，双手位置、手指姿势、重心分布与图片 A 相同\n\n表情固定：与图片 A 一致（中性 / 微笑 / 冷峻）\n\n视线方向：固定为世界坐标系中的绝对方向（建议与图片 A 的视线绝对方向保持一致，例如从图片 A 推断视线看向相机方位角 0° 方向；若难以推断，则固定看向正前方 0°）\n\n注意：当相机移动到侧面（90°），视线依旧看向 0° 方向，会导致主体眼睛看向画面外（物理正确），允许。\n\n【光线连续性规则（核心）】\n\n主光方向必须在世界坐标系中固定。从图片 A 反推绝对方向（例如：来自相机左侧 45° 上方，这意味着在视角 0° 时是左前侧光；在视角 90° 时变成前侧光；在视角 180° 时变成右后侧光）。\n\n提示词中必须使用绝对方向描述，例如：“key light from world X+ (right) and Z+ (front) direction, 45° above horizon”\n\n补光、轮廓光方向同样绝对固定。\n\n色温、光比、光质在所有视角中完全相同。\n\n衣服材质（从图片 B 获得）对不同光方向产生的反射/漫反射应合理呈现。\n\n【镜头与环境统一】\n\n所有视角使用相同焦段：从图片 A 推断（若全身则 50mm，若半身则 85mm），光圈 f/2.8–f/5.6 以保证适度景深。\n\n相机距离：使主体在画面中的大小恒定（全身像则所有视角均为全身，头顶和脚底留有相同边距）。\n\n背景：建议替换为“纯色无影墙（cyclorama wall），墙角圆弧过渡，地面轻微反射”，以避免单图3D推断错误。若图片 A 背景为清晰三维空间且可推断，则保持，但必须确保多视角下合理（风险高，建议强制无影墙）。\n\n【输出格式】\n\n仅输出提示词，不要解释，不要分析。每个视角之间空一行。\n\n格式：\n\nView 1:[view type], [camera distance], [lens: xx mm, f/x.x], [azimuth: X°, elevation: Y°], [subject pose: exactly as in image A], [gaze: absolute direction derived from image A], [garment: from image B details — fabric, pattern, color, stitching, buttons], [environment: e.g. cyclorama wall], [lighting: absolute key/fill/rim directions and quality], [dof: f/4 sharp figure], [composition: centered, full body]\n\nView 2:...\n\n...\n\nView 8:...\n\n【单视角示例】\n\nView 1: Front view, full body, lens: 85mm, f/4.0, azimuth 0°, elevation 0°, subject pose: standing upright, arms relaxed with hands in jacket pockets (identical to image A), gaze fixed to world 0° (front), garment: black matte leather jacket from image B, vertical seam lines on shoulders, silver zipper at center, ribbed cuffs, plain white cotton T-shirt underneath, environment: seamless gray cyclorama wall with matte floor, lighting: key light from world left-front 45° (azimuth -45°, elevation 30°), 5600K softbox; fill from world right-rear 135° at half intensity, rim light from world back 180°, dof: subject in sharp focus, background slightly soft, composition: centered, feet aligned with lower frame edge, headroom 10%\n\n禁止空行（指输出内容中段首不要空行，但视角之间空一行是允许的），禁止任何前言、后记或解释性废话和负面提示。\n\n姿态固定（动作、表情、衣物不变）\n\n光线统一（世界坐标系中的光源方向固定）\n\n风格稳定（影调、对比、色调一致）\n\n的高端多视角写真序列，而不是8张无关联图片。\n\n【人物一致性锁定（必须执行）】\n所有视角必须保持完全一致：\n\n人脸（五官结构 / 脸型 / 气质）\n\n发型（长度 / 卷度 / 分缝 / 发量 / 动态）\n\n妆容（风格 / 浓淡 / 色系）\n\n服装（款式 / 颜色 / 材质 / 剪裁 / 褶皱形态）\n\n配饰（包 / 手机 / 饰品 / 鞋）\n\n身体姿势（全身姿态、手部位置、视线方向）—— 严格固定，不得随视角改变\n\n严禁：\n\n换脸 / 换发型 / 换衣服 / 改风格\n\n改变姿势或视线相对方向（如正面视角下看镜头，侧面视角下必须保持看镜头的方向，但透视会变化——这属于物理正确，允许）\n\n【视觉信息反推（先隐式完成）】\n从输入图像中提取并贯穿所有视角：\n\n人物特征（同上）\n\n环境特征：\n\n空间类型（建议使用纯色无影墙 / 无缝背景纸 / 简单纹理墙面，避免因视角变化产生矛盾）\n\n地面材质（如磨砂亚克力、木地板、水泥地，需有可推断的纹理或反射）\n\n背景元素（若有标志物，需明确其3D空间位置，否则建议替换为单色）\n\n光线特征（世界坐标系固定）：\n\n主光方向（绝对方向：前方 / 左侧 / 右侧 / 左侧后方等）\n\n补光方向与强度\n\n光质（柔光 / 硬光）\n\n色温（开尔文值）\n\n是否添加轮廓光（rim light）或背景光\n\n【多视角生成规则（核心执行）】\n每一段必须包含：\n\nview type（视角类型：方位角 + 俯仰角）\n\ncamera distance（相机距离：近 / 中 / 全）\n\nlens（焦段 + 光圈，所有视角保持一致）\n\nsubject orientation（主体朝向：相对相机的角度，但实际主体静止，相机运动）\n\nenvironment（环境在视角变化后的自然延续）\n\nlighting（相对于世界坐标的光线描述，注意阴影随视角变化）\n\ndepth of field（景深，所有视角统一）\n\ncomposition（构图规则，如三分法、居中）\n\n【视角递进结构（必须遵守）】\n按环绕顺序排列，相机水平旋转一周（方位角从 0° 递增），俯仰角固定为 0°（平视），可选增加±15°俯仰变化。\n\n推荐顺序（8个视角）：\nView 1：Front (0°) —— 与输入图片视角最接近\nView 2：Front-left 45° (-45°)\nView 3：Left 90° (-90°)\nView 4：Back-left 135° (135°)\nView 5：Back 180°\nView 6：Back-right 225° (或 -135°)\nView 7：Right 270° (或 -90°)\nView 8：Front-right 315° (或 -45°)\n\n若允许俯仰角：\n\n保留至少6个水平环绕视角 + 1个俯视（Top-down, -30°~-60° 俯角）+ 1个仰视（Low-angle, +30°~+45° 仰角）\n\n【视角连续性规则】\n\n主体姿态完全固定（站立或坐姿，双手位置不变，表情不变，视线方向保持绝对世界方向——例如始终看向镜头方位角0°方向，这会导致在不同视角下视线方向偏离相机，属于正常物理效果；也可以固定视线指向相机，但这需要改变头部转动，违反姿态固定，故不建议）\n\n建议：视线固定看向正前方（世界坐标系 0° 方向），或保持闭眼/看地面等中性方向。\n\n衣物和发丝的流体状态应随重力自然下垂，不从物理上随视角改变。\n\n【光线连续性规则（核心）】\n光源必须定义在世界坐标系中，而非跟随相机。\n\n主光方向：从输入图像反推出绝对方向（例如：来自相机左侧 45° 上方）\n\n所有视角的描述中，光线方向绝对不变，仅描述阴影和亮部相对于新视角的可见变化\n\n色温、光质、光比在所有视角中完全相同\n\n不允许出现“左侧光”这种相对表述，应写“世界坐标系中来自东偏北45°方向的光”\n\n【镜头语言规范】\n所有视角使用一致的镜头参数：\n\n焦段：85mm（半身像）、50mm（全身）、或输入图像推断值\n\n光圈：f/2.8 – f/5.6（保证足够景深，避免因视角变化导致虚化不一致）\n\n相机距离：保持主体在画面中大小恒定（若为全身，则所有视角均为相同距离的全景；若为中景，则距离固定）\n\n【环境与背景处理】\n\n若输入图像背景是真实三维空间（如街道、房间），多视角下背景必须物理合理延伸。由于难以从单图推断完整3D，建议在提示词中强制替换为“纯色无影墙（cyclorama wall）”或“360° HDRI 环境贴图（例如中性灰棚拍环境）”\n\n明确输出背景类型：如“干净的无影墙，墙角为圆弧过渡，地面反射均匀”\n\n【输出格式（严格执行）】\n仅输出提示词，不要解释，不要分析\n\n每个视角之间必须空一行\n\n格式如下：\n\nView 1:[view type], [camera distance], [lens: xx mm, f/x.x], [azimuth: X°, elevation: Y°], [subject pose unchanged], [environment description], [lighting: absolute direction + quality], [depth of field], [composition]\n\nView 2:...\n\n...\n\nView 8:...\n\n【单视角模板示例】\nView 1: Front view, full body, lens: 85mm, f/4.0, azimuth 0°, elevation 0°, standing relaxed with hands in coat pockets, gaze fixed straight ahead (world 0°), hair static, solid gray cyclorama wall with slight floor reflection, key light from world left-front 45° at 2m, 5600K softbox, fill from right rear at 1/2 power, dof: sharp figure, background slightly soft at f/4, centered composition, feet aligned with frame bottom"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "字符串（多行）"
+    }
+  },
+  "410": {
+    "inputs": {
+      "model_name": "Qwen/Qwen3-VL-4B-Instruct",
+      "system_prompt": "You are a helpful assistant.",
+      "user_prompt": [
+        "409",
+        0
+      ],
+      "quantization": "4-bit (VRAM-friendly)",
+      "max_tokens": 4096,
+      "temperature": 0.7,
+      "top_p": 0.9,
+      "top_k": 50,
+      "repetition_penalty": 1.1,
+      "num_beams": 1,
+      "keep_model_loaded": true,
+      "seed": 1508506576,
+      "device": "auto",
+      "images": [
+        "412",
+        0
+      ],
+      "images_batch_2": [
+        "411",
+        0
+      ]
+    },
+    "class_type": "QwenVL_MultiImage_Advanced",
+    "_meta": {
+      "title": "🧪 QwenVL Multi-Image (Advanced)"
+    }
+  },
+  "411": {
+    "inputs": {
+      "image": "16.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "加载图像"
+    }
+  },
+  "412": {
+    "inputs": {
+      "aspect_ratio": "original",
+      "proportional_width": 1,
+      "proportional_height": 1,
+      "fit": "crop",
+      "method": "lanczos",
+      "round_to_multiple": "16",
+      "scale_to_side": "longest",
+      "scale_to_length": 1280,
+      "background_color": "#000000",
+      "image": [
+        "265",
+        0
+      ]
+    },
+    "class_type": "LayerUtility: ImageScaleByAspectRatio V2",
+    "_meta": {
+      "title": "图层工具：按宽高比缩放 V2"
+    }
+  },
+  "413": {
+    "inputs": {
+      "text": "View 8: Front-right 315°, full body, lens: 85mm, f/4.0, azimuth -45°, elevation 0°, standing relaxed with hands in pockets, gaze fixed straight ahead (world 0°), hair static, solid gray cyclorama wall with slight floor reflection, key light from world left-front 45° at 2m, 5600K softbox, fill from right rear at 1/2 power, dof: sharp figure, background slightly soft at f/4, centered composition, feet aligned with frame bottom",
+      "anything": [
+        "279",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "展示任何"
+    }
+  },
+  "414": {
+    "inputs": {
+      "aspect_ratio": "original",
+      "proportional_width": 1,
+      "proportional_height": 1,
+      "fit": "crop",
+      "method": "lanczos",
+      "round_to_multiple": "16",
+      "scale_to_side": "longest",
+      "scale_to_length": 1280,
+      "background_color": "#000000",
+      "image": [
+        "411",
+        0
+      ]
+    },
+    "class_type": "LayerUtility: ImageScaleByAspectRatio V2",
+    "_meta": {
+      "title": "图层工具：按宽高比缩放 V2"
+    }
+  },
+  "415": {
+    "inputs": {
+      "pixels": [
+        "414",
+        0
+      ],
+      "vae": [
+        "241",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE编码"
+    }
+  },
+  "416": {
+    "inputs": {},
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "参考Latent"
+    }
+  },
+  "417": {
+    "inputs": {},
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "参考Latent"
+    }
+  },
+  "418": {
+    "inputs": {
+      "conditioning": [
+        "248",
+        0
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "条件零化"
+    }
+  },
+  "419": {
+    "inputs": {
+      "conditioning": [
+        "418",
+        0
+      ],
+      "latent": [
+        "229",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "参考Latent"
+    }
+  },
+  "420": {
+    "inputs": {
+      "conditioning": [
+        "419",
+        0
+      ],
+      "latent": [
+        "415",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "参考Latent"
+    }
+  },
+  "421": {
+    "inputs": {
+      "conditioning": [
+        "237",
+        0
+      ],
+      "latent": [
+        "415",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "参考Latent"
+    }
+  },
+  "422": {
+    "inputs": {
+      "separator": "",
+      "text1": [
+        "423",
+        0
+      ],
+      "text2": [
+        "279",
+        0
+      ]
+    },
+    "class_type": "CR Text Concatenate",
+    "_meta": {
+      "title": "🔤 CR Text Concatenate"
+    }
+  },
+  "423": {
+    "inputs": {
+      "value": "Edit image into the given view of the same person wearing the same garment. Preserve all visible garment identity cues from the original image, including the garment type, color palette, silhouette, sleeve length, collar/neckline structure as much as physically plausible, texture, and any visible patterns. Do not chnage the shoes of the character if present."
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "字符串（多行）"
+    }
+  },
+  "424": {
+    "inputs": {
+      "text": "Edit image into the given view of the same person wearing the same garment. Preserve all visible garment identity cues from the original image, including the garment type, color palette, silhouette, sleeve length, collar/neckline structure as much as physically plausible, texture, and any visible patterns. Do not chnage the shoes of the character if present.View 8: Front-right 315°, full body, lens: 85mm, f/4.0, azimuth -45°, elevation 0°, standing relaxed with hands in pockets, gaze fixed straight ahead (world 0°), hair static, solid gray cyclorama wall with slight floor reflection, key light from world left-front 45° at 2m, 5600K softbox, fill from right rear at 1/2 power, dof: sharp figure, background slightly soft at f/4, centered composition, feet aligned with frame bottom",
+      "anything": [
+        "422",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "展示任何"
+    }
+  },
+  "427": {
+    "inputs": {
+      "image_path": "/hpc2hdd/home/dsaa2012_017/comfyui/ComfyUI/input/n23.png",
+      "RGBA": "false",
+      "filename_text_extension": "true"
+    },
+    "class_type": "Image Load",
+    "_meta": {
+      "title": "Image Load(cloth)"
+    }
+  },
+  "435": {
+    "inputs": {
+      "prompt": [
+        "422",
+        0
+      ],
+      "start_index": 0,
+      "max_rows": 1000,
+      "remove_empty_lines": true
+    },
+    "class_type": "easy promptLine",
+    "_meta": {
+      "title": "提示词行"
+    }
+  },
+  "436": {
+    "inputs": {
+      "text": "Edit image into the given view of the same person wearing the same garment. Preserve all visible garment identity cues from the original image, including the garment type, color palette, silhouette, sleeve length, collar/neckline structure as much as physically plausible, texture, and any visible patterns. Do not chnage the shoes of the character if present.View 8: Front-right 315°, full body, lens: 85mm, f/4.0, azimuth -45°, elevation 0°, standing relaxed with hands in pockets, gaze fixed straight ahead (world 0°), hair static, solid gray cyclorama wall with slight floor reflection, key light from world left-front 45° at 2m, 5600K softbox, fill from right rear at 1/2 power, dof: sharp figure, background slightly soft at f/4, centered composition, feet aligned with frame bottom",
+      "anything": [
+        "435",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "展示任何"
+    }
+  }
+}
