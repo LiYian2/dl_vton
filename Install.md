@@ -81,6 +81,9 @@ They are:
 - [ComfyUI-WD14-Tagger](https://github.com/pythongosssss/ComfyUI-WD14-Tagger)
 - [rgthree-comfy](https://github.com/rgthree/rgthree-comfy)
 - [was-node-suite-comfyui](https://github.com/WASasquatch/was-node-suite-comfyui)
+- [ComfyUI-Logic ](https://github.com/playboy-dongan/ComfyUI-Logic.git)
+- [ComfyUI-llama-cpp_vlm](https://github.com/lihaoyun6/ComfyUI-llama-cpp_vlm)
+- [ComfyUI-qwenmultiangle](https://github.com/jtydhr88/ComfyUI-qwenmultiangle.git)
 - [comfyui-idm-vton (disabled)](https://github.com/TemryL/ComfyUI-IDM-VTON)
 - [IMAGDressing-ComfyUI (disabled)](https://github.com/AIFSH/IMAGDressing-ComfyUI)
 
