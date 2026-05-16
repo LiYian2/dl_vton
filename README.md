@@ -96,4 +96,5 @@ We thank the developers of ComfyUI and the broader open-source image-generation 
 - [ComfyUI-CatVTON](https://github.com/pzc163/Comfyui-CatVTON) 
 - [ComfyUI-IDM-VTON](https://github.com/TemryL/ComfyUI-IDM-VTON) 
 - [IMAGDressing-ComfyUI](https://github.com/AIFSH/IMAGDressing-ComfyUI)
+
 Some listed nodes or baseline integrations may be disabled in the final workflow but were used during experimentation. 
