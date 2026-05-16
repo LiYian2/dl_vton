@@ -1,0 +1,6532 @@
+{
+  "id": "74e0f198-76ba-4064-860a-afc2a4c19f34",
+  "revision": 0,
+  "last_node_id": 25,
+  "last_link_id": 261,
+  "nodes": [
+    {
+      "id": "CR Text.0",
+      "type": "CR Text",
+      "pos": [
+        100.00129661763822,
+        129.99996815375277
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "*",
+          "links": [
+            112
+          ]
+        },
+        {
+          "name": "show_help",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CR Text",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "\n            You are a garment-description assistant for a reference-conditioned virtual try-on pipeline.\n            Analyze the target upper-body garment image. Describe only garment attributes needed for faithful transfer. Do not describe the person/model wearing it unless necessary to infer garment shape.\n            Output valid JSON only. Use English only. Keep the entire output under 160 words. Use short phrases, not long sentences. Do not repeat information across fields. Do not describe transparency information. Do not invent unseen details. If a field is not applicable, use \"\".\n            Return exactly this JSON:\n            {\n            \"category_shape\": \"Max 20 words. Garment category, silhouette, fit, length, and overall volume.\",\n            \"neckline_sleeves_coverage\": \"Max 20 words. Neckline/collar, sleeve length, shoulder/arm/chest/waist coverage or exposure.\",\n            \"material_texture\": \"Max 10 words. Fabric impression, thickness, shine, knit, mesh, lace, leather, cotton, etc.\",\n            \"colors_patterns_text\": \"Max 20 words. Main colors, secondary colors, patterns, prints, logos, and readable text.\",\n            \"special_details\": \"Max 10 words. Buttons, zipper, seams, pockets, belt, lace, embroidery, asymmetry, decorations.\",\n            \"case_prompt_for_flux\": \"Max 40 words. Compact garment-transfer clause for Flux2 preserving category, shape, neckline, sleeves, coverage, material, colors, pattern, logo/text, and special details.\"\n            }\n\n            Rules:\n            - If text or logo is visible but unreadable, say \"unreadable visible text/logo\"; do not guess it.\n            - If the garment is transparent, mesh, lace, sleeveless, off-shoulder, halter, low-neck, cropped, or unusually cut, explicitly describe exposed skin regions.\n            - Focus on what must be preserved during try-on.\n            "
+      ]
+    },
+    {
+      "id": "ImageScaleToTotalPixels.0",
+      "type": "ImageScaleToTotalPixels",
+      "pos": [
+        600.0012044104333,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        106
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 111
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            113,
+            125
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageScaleToTotalPixels",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "lanczos",
+        1.2,
+        1
+      ]
+    },
+    {
+      "id": "AILab_QwenVL.0",
+      "type": "AILab_QwenVL",
+      "pos": [
+        976.0352488216358,
+        129.99996815375277
+      ],
+      "size": [
+        340,
+        320
+      ],
+      "flags": {},
+      "order": 31,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 113
+        },
+        {
+          "name": "video",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "custom_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "custom_prompt"
+          },
+          "link": 112
+        }
+      ],
+      "outputs": [
+        {
+          "name": "RESPONSE",
+          "type": "STRING",
+          "links": [
+            114
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AILab_QwenVL",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "Qwen3-VL-4B-Instruct",
+        "4-bit (VRAM-friendly)",
+        "auto",
+        "🖼️ Detailed Description",
+        "",
+        1024,
+        274870569668538,
+        352835173,
+        "randomize"
+      ],
+      "color": "#28403f",
+      "bgcolor": "#374539"
+    },
+    {
+      "id": "LayerUtility: PurgeVRAM V2.0",
+      "type": "LayerUtility: PurgeVRAM V2",
+      "pos": [
+        1476.035156614429,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        128
+      ],
+      "flags": {},
+      "order": 38,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "anything",
+          "type": "*",
+          "link": 114
+        }
+      ],
+      "outputs": [
+        {
+          "name": "any",
+          "type": "*",
+          "links": [
+            116
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LayerUtility: PurgeVRAM V2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        true,
+        true
+      ],
+      "color": "rgba(38, 73, 116, 0.7)"
+    },
+    {
+      "id": "CR Text.1",
+      "type": "CR Text",
+      "pos": [
+        100.00129661763822,
+        691.9999778814522
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "*",
+          "links": [
+            115
+          ]
+        },
+        {
+          "name": "show_help",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CR Text",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "TRYON. Dress the person in the target upper-body garment. \n    This is a garment layering task, not a body replacement task. Keep the person intact underneath the garment. The garment must look like real clothing worn on the body, naturally wrapping over the shoulders, chest, and upper torso.\n    Respect the person's facing direction: if the person is shown from the back, do not generate front-side clothing details (e.g., front neckline, chest logo, buttons). The garment must match the visible back view only.\n    Any body region that should be covered by the target garment must be covered by cloth, not left as visible skin. Do not expose nipples or uncovered chest inside the garment-covered area. \n    Edit only the target upper-garment region and leave all non-garment regions unchanged, preserving the original face, hair, pose, hands, fingers, arms, lower body, background, lighting, framing, and overall image style exactly as in the input. Do not change the lower body regions, do not undress the original trousers or dress. Please cover the nipples. Please do not make the nipples visible. Please erase the nipples.\n    Follow the target garment faithfully: category, silhouette, neckline, sleeves, length, material, colors, logo, text, and details. Do not change garment design, erase the torso, do not replace the body with clothing, do not reveal hidden body parts, do not zoom out. Do not add/remove fingers, distort arms, or create fake shadows."
+      ]
+    },
+    {
+      "id": "CR Text Concatenate.0",
+      "type": "CR Text Concatenate",
+      "pos": [
+        1846.0354722747652,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        124
+      ],
+      "flags": {},
+      "order": 46,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text1",
+          "shape": 7,
+          "type": "STRING",
+          "link": 115
+        },
+        {
+          "name": "text2",
+          "shape": 7,
+          "type": "STRING",
+          "link": 116
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "*",
+          "links": [
+            117
+          ]
+        },
+        {
+          "name": "show_help",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CR Text Concatenate",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": "easy showAnything.0",
+      "type": "easy showAnything",
+      "pos": [
+        2216.0357879351004,
+        129.99996815375277
+      ],
+      "size": [
+        225,
+        88
+      ],
+      "flags": {},
+      "order": 50,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 117
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": [
+            119
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "easy showAnything",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "TRYON. Dress the person in the target upper-body garment. \n    This is a garment layering task, not a body replacement task. Keep the person intact underneath the garment. The garment must look like real clothing worn on the body, naturally wrapping over the shoulders, chest, and upper torso.\n    Respect the person's facing direction: if the person is shown from the back, do not generate front-side clothing details (e.g., front neckline, chest logo, buttons). The garment must match the visible back view only.\n    Any body region that should be covered by the target garment must be covered by cloth, not left as visible skin. Do not expose nipples or uncovered chest inside the garment-covered area. \n    Edit only the target upper-garment region and leave all non-garment regions unchanged, preserving the original face, hair, pose, hands, fingers, arms, lower body, background, lighting, framing, and overall image style exactly as in the input. Do not change the lower body regions, do not undress the original trousers or dress. Please cover the nipples. Please do not make the nipples visible. Please erase the nipples.\n    Follow the target garment faithfully: category, silhouette, neckline, sleeves, length, material, colors, logo, text, and details. Do not change garment design, erase the torso, do not replace the body with clothing, do not reveal hidden body parts, do not zoom out. Do not add/remove fingers, distort arms, or create fake shadows.{\n    \"category_shape\": \"Sleeveless top with fringe hem\",\n    \"neckline_sleeves_coverage\": \"Round neck, no sleeves, full chest/upper torso exposed\",\n    \"material_texture\": \"Lightweight woven fabric\",\n    \"colors_patterns_text\": \"Vertical stripes: white, blue, green, pink, beige; no text\",\n    \"special_details\": \"Fringe trim at bottom edge\",\n    \"case_prompt_for_flux\": \"Try on sleeveless striped top with round neck, fringe hem, vertical stripe pattern in multiple colors\"\n}"
+      ]
+    },
+    {
+      "id": "RandomNoise.0",
+      "type": "RandomNoise",
+      "pos": [
+        100.00129661763822,
+        1021.9998480438029
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            143
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RandomNoise",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        577083445056289,
+        "randomize"
+      ]
+    },
+    {
+      "id": "UNETLoader.0",
+      "type": "UNETLoader",
+      "pos": [
+        100.00129661763822,
+        1233.9999523082392
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            118
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "flux-2-klein/Flux2-Klein-9B-True-v2-bf16.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": "LoraLoaderModelOnly.0",
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        600.0012044104333,
+        553.9999517449294
+      ],
+      "size": [
+        270,
+        104
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 118
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            134,
+            177
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraLoaderModelOnly",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "F2K_9bb-一致性consist_20260225.safetensors",
+        0.8
+      ]
+    },
+    {
+      "id": "CLIPLoader.0",
+      "type": "CLIPLoader",
+      "pos": [
+        100.00129661763822,
+        1445.9999815934434
+      ],
+      "size": [
+        270,
+        106
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            120,
+            168
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "qwen_3_8b_fp8mixed.safetensors",
+        "flux2",
+        "default"
+      ]
+    },
+    {
+      "id": "CLIPTextEncode.0",
+      "type": "CLIPTextEncode",
+      "pos": [
+        2468.198324907307,
+        49.906313769771714
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 55,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 120
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 119
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            123,
+            129
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": "VAELoader.0",
+      "type": "VAELoader",
+      "pos": [
+        100.00129661763822,
+        1913.999652954621
+      ],
+      "size": [
+        270,
+        76
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            122,
+            126,
+            150,
+            172,
+            206
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "flux2-vae.safetensors"
+      ]
+    },
+    {
+      "id": "VAEEncode.0",
+      "type": "VAEEncode",
+      "pos": [
+        600.0012044104333,
+        954.0000579293213
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 61,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 254
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 122
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            124,
+            131
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEEncode",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "ReferenceLatent.0",
+      "type": "ReferenceLatent",
+      "pos": [
+        2956.0352195880596,
+        129.99996815375277
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 64,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 123
+        },
+        {
+          "name": "latent",
+          "shape": 7,
+          "type": "LATENT",
+          "link": 124
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            127
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReferenceLatent",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "VAEEncode.1",
+      "type": "VAEEncode",
+      "pos": [
+        976.0352488216358,
+        559.9999398414335
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 32,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 125
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 126
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            128,
+            133
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEEncode",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "ReferenceLatent.1",
+      "type": "ReferenceLatent",
+      "pos": [
+        3196.0353432820802,
+        129.99996815375277
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 67,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 127
+        },
+        {
+          "name": "latent",
+          "shape": 7,
+          "type": "LATENT",
+          "link": 128
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            135
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReferenceLatent",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "ConditioningZeroOut.0",
+      "type": "ConditioningZeroOut",
+      "pos": [
+        2956.0352195880596,
+        305.9999563910843
+      ],
+      "size": [
+        225,
+        48
+      ],
+      "flags": {},
+      "order": 57,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 129
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            130
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ConditioningZeroOut",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "ReferenceLatent.2",
+      "type": "ReferenceLatent",
+      "pos": [
+        3196.0353432820802,
+        305.9999563910843
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 65,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 130
+        },
+        {
+          "name": "latent",
+          "shape": 7,
+          "type": "LATENT",
+          "link": 131
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            132
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReferenceLatent",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "ReferenceLatent.3",
+      "type": "ReferenceLatent",
+      "pos": [
+        3436.034867142246,
+        129.99996815375277
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 68,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 132
+        },
+        {
+          "name": "latent",
+          "shape": 7,
+          "type": "LATENT",
+          "link": 133
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            136
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReferenceLatent",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "CFGGuider.0",
+      "type": "CFGGuider",
+      "pos": [
+        3676.034990836267,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        124
+      ],
+      "flags": {},
+      "order": 69,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 134
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 135
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 136
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            144
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CFGGuider",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        1
+      ]
+    },
+    {
+      "id": "KSamplerSelect.0",
+      "type": "KSamplerSelect",
+      "pos": [
+        100.00129661763822,
+        2101.999879812273
+      ],
+      "size": [
+        270,
+        76
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            145
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSamplerSelect",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "euler"
+      ]
+    },
+    {
+      "id": "easy int.0",
+      "type": "easy int",
+      "pos": [
+        100.00129661763822,
+        2289.999806752997
+      ],
+      "size": [
+        270,
+        100
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "int",
+          "type": "INT",
+          "links": [
+            137
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "easy int",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        1280
+      ]
+    },
+    {
+      "id": "LayerUtility: ImageScaleByAspectRatio V2.0",
+      "type": "LayerUtility: ImageScaleByAspectRatio V2",
+      "pos": [
+        600.0012044104333,
+        1129.9998587185733
+      ],
+      "size": [
+        276.03125,
+        420
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 259
+        },
+        {
+          "name": "mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": null
+        },
+        {
+          "name": "scale_to_length",
+          "type": "INT",
+          "widget": {
+            "name": "scale_to_length"
+          },
+          "link": 137
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            152,
+            192,
+            196,
+            211
+          ]
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "name": "original_size",
+          "type": "BOX",
+          "links": null
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "links": [
+            139,
+            141
+          ]
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": [
+            140,
+            142
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LayerUtility: ImageScaleByAspectRatio V2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "original",
+        1,
+        1,
+        "crop",
+        "lanczos",
+        "16",
+        "longest",
+        1024,
+        "#000000"
+      ],
+      "color": "rgba(38, 73, 116, 0.7)"
+    },
+    {
+      "id": "Flux2Scheduler.0",
+      "type": "Flux2Scheduler",
+      "pos": [
+        976.0352488216358,
+        1149.9999689987176
+      ],
+      "size": [
+        270,
+        132
+      ],
+      "flags": {},
+      "order": 44,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 139
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 140
+        }
+      ],
+      "outputs": [
+        {
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            146
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Flux2Scheduler",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        5,
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": "EmptyFlux2LatentImage.0",
+      "type": "EmptyFlux2LatentImage",
+      "pos": [
+        976.0352488216358,
+        1385.9998007114746
+      ],
+      "size": [
+        270,
+        132
+      ],
+      "flags": {},
+      "order": 45,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 141
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 142
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            147
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyFlux2LatentImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": "SamplerCustomAdvanced.0",
+      "type": "SamplerCustomAdvanced",
+      "pos": [
+        4046.0342549794595,
+        129.999964798801
+      ],
+      "size": [
+        225,
+        392
+      ],
+      "flags": {},
+      "order": 70,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "noise",
+          "type": "NOISE",
+          "link": 143
+        },
+        {
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 144
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 145
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 146
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 147
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            148
+          ]
+        },
+        {
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustomAdvanced",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "LayerUtility: PurgeVRAM V2.1",
+      "type": "LayerUtility: PurgeVRAM V2",
+      "pos": [
+        4325.933978912431,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        128
+      ],
+      "flags": {},
+      "order": 71,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "anything",
+          "type": "*",
+          "link": 148
+        }
+      ],
+      "outputs": [
+        {
+          "name": "any",
+          "type": "*",
+          "links": [
+            149
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LayerUtility: PurgeVRAM V2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        true,
+        true
+      ],
+      "color": "rgba(38, 73, 116, 0.7)"
+    },
+    {
+      "id": "VAEDecode.0",
+      "type": "VAEDecode",
+      "pos": [
+        4695.934894406621,
+        129.99996815375277
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 72,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 149
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 150
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            154,
+            160,
+            200
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "easy sam3ModelLoader.0",
+      "type": "easy sam3ModelLoader",
+      "pos": [
+        100.00129661763822,
+        3039.999668442188
+      ],
+      "size": [
+        270,
+        184
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "sam3_model",
+          "type": "EASY_SAM3_MODEL",
+          "links": [
+            151,
+            153
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "easy sam3ModelLoader",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "sam3.1_multiplex_fp16.safetensors",
+        "image",
+        "cuda",
+        "bf16"
+      ]
+    },
+    {
+      "id": "easy sam3ImageSegmentation.0",
+      "type": "easy sam3ImageSegmentation",
+      "pos": [
+        976.0352488216358,
+        735.9998905891491
+      ],
+      "size": [
+        400,
+        332
+      ],
+      "flags": {},
+      "order": 43,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "SAM3 Model",
+          "name": "sam3_model",
+          "type": "EASY_SAM3_MODEL",
+          "link": 151
+        },
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 152
+        },
+        {
+          "label": "coordinates_positive",
+          "name": "coordinates_positive",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "label": "coordinates_negative",
+          "name": "coordinates_negative",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "label": "bboxes",
+          "name": "bboxes",
+          "shape": 7,
+          "type": "BBOX",
+          "link": null
+        },
+        {
+          "label": "mask",
+          "name": "mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "masks",
+          "type": "MASK",
+          "links": [
+            155,
+            193,
+            198,
+            209
+          ]
+        },
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "obj_masks",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "name": "boxes",
+          "type": "BBOX",
+          "links": null
+        },
+        {
+          "name": "scores",
+          "type": "FLOAT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "easy sam3ImageSegmentation",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "upper clothes",
+        0.3,
+        false,
+        "none",
+        -1
+      ]
+    },
+    {
+      "id": "easy sam3ImageSegmentation.1",
+      "type": "easy sam3ImageSegmentation",
+      "pos": [
+        4935.935018100642,
+        129.99996815375277
+      ],
+      "size": [
+        400,
+        332
+      ],
+      "flags": {},
+      "order": 73,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "SAM3 Model",
+          "name": "sam3_model",
+          "type": "EASY_SAM3_MODEL",
+          "link": 153
+        },
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 154
+        },
+        {
+          "label": "coordinates_positive",
+          "name": "coordinates_positive",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "label": "coordinates_negative",
+          "name": "coordinates_negative",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "label": "bboxes",
+          "name": "bboxes",
+          "shape": 7,
+          "type": "BBOX",
+          "link": null
+        },
+        {
+          "label": "mask",
+          "name": "mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "masks",
+          "type": "MASK",
+          "links": [
+            156,
+            215
+          ]
+        },
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "obj_masks",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "name": "boxes",
+          "type": "BBOX",
+          "links": null
+        },
+        {
+          "name": "scores",
+          "type": "FLOAT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "easy sam3ImageSegmentation",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "upper clothes",
+        0.4,
+        false,
+        "none",
+        -1
+      ]
+    },
+    {
+      "id": "AddMask.0",
+      "type": "AddMask",
+      "pos": [
+        5435.934925893436,
+        129.99996815375277
+      ],
+      "size": [
+        225,
+        96
+      ],
+      "flags": {},
+      "order": 75,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mask1",
+          "type": "MASK",
+          "link": 155
+        },
+        {
+          "name": "mask2",
+          "type": "MASK",
+          "link": 156
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            157
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AddMask",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "Mask Fill Holes.0",
+      "type": "Mask Fill Holes",
+      "pos": [
+        5805.9343418029885,
+        129.99996815375277
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 77,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "masks",
+          "type": "MASK",
+          "link": 157
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASKS",
+          "type": "MASK",
+          "links": [
+            158
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Mask Fill Holes",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "INPAINT_ExpandMask.0",
+      "type": "INPAINT_ExpandMask",
+      "pos": [
+        6045.9347654139365,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        156
+      ],
+      "flags": {},
+      "order": 79,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 158
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": [
+            161,
+            202
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "INPAINT_ExpandMask",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        4,
+        2,
+        "gaussian"
+      ]
+    },
+    {
+      "id": "ImageCompositeMasked.0",
+      "type": "ImageCompositeMasked",
+      "pos": [
+        6415.934481240417,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        204
+      ],
+      "flags": {},
+      "order": 80,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "destination",
+          "type": "IMAGE",
+          "link": 255
+        },
+        {
+          "name": "source",
+          "type": "IMAGE",
+          "link": 160
+        },
+        {
+          "name": "mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": 161
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            163,
+            170,
+            204
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageCompositeMasked",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        0,
+        0,
+        false
+      ]
+    },
+    {
+      "id": "AILab_QwenVL.1",
+      "type": "AILab_QwenVL",
+      "pos": [
+        6785.933897149969,
+        129.99996815375277
+      ],
+      "size": [
+        340,
+        320
+      ],
+      "flags": {},
+      "order": 82,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 163
+        },
+        {
+          "name": "video",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "custom_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "custom_prompt"
+          },
+          "link": 162
+        }
+      ],
+      "outputs": [
+        {
+          "name": "RESPONSE",
+          "type": "STRING",
+          "links": [
+            164
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AILab_QwenVL",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "Qwen3-VL-4B-Instruct",
+        "4-bit (VRAM-friendly)",
+        "auto",
+        "🖼️ Detailed Description",
+        "",
+        1024,
+        274870569668538,
+        2219557812,
+        "randomize"
+      ],
+      "color": "#28403f",
+      "bgcolor": "#374539"
+    },
+    {
+      "id": "LayerUtility: PurgeVRAM V2.2",
+      "type": "LayerUtility: PurgeVRAM V2",
+      "pos": [
+        7225.933923977722,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        128
+      ],
+      "flags": {},
+      "order": 86,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "anything",
+          "type": "*",
+          "link": 164
+        }
+      ],
+      "outputs": [
+        {
+          "name": "any",
+          "type": "*",
+          "links": [
+            166
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LayerUtility: PurgeVRAM V2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        true,
+        true
+      ],
+      "color": "rgba(38, 73, 116, 0.7)"
+    },
+    {
+      "id": "RandomNoise.1",
+      "type": "RandomNoise",
+      "pos": [
+        100.00129661763822,
+        3299.9997524578894
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            184
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RandomNoise",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        860488928627907,
+        "randomize"
+      ]
+    },
+    {
+      "id": "CR Text.3",
+      "type": "CR Text",
+      "pos": [
+        100.00129661763822,
+        3511.999931701557
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "*",
+          "links": [
+            165
+          ]
+        },
+        {
+          "name": "show_help",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CR Text",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "Primary task: remove local visual artifacts from the current try-on result without changing the overall image. This is a minimal refinement step, not a re-generation step. Also remove any nipple exposure if present.\n            Clean up abnormal generated artifacts, mask remnants, floating or detached fabric pieces, unnatural black bands or patches, hard cut edges, broken garment boundaries, artificial arm/hand shadows, skin-color mismatches, and non-anatomical fragments. These abnormal artifacts must not remain in the refined image.\n            Where the artifact overlaps an exposed skin region, replace it with natural continuous skin that matches the surrounding visible skin tone, lighting, texture, and shading. Maintain consistent skin color across the face, neck, shoulders, arms, hands, and all exposed skin regions. Do not create new body parts or reveal regions outside the original visible body range.\n            Preserve the person's identity, face, hairstyle, expression, pose, body shape, hands, visible fingers, arms, tattoos, skin texture, camera angle, crop, framing, background, lighting, and visual style. Do not redraw the person, change the pose, change the framing, zoom out, or repaint the whole image.\n            Preserve the garment category, silhouette, neckline, sleeves, length, material, color, texture, pattern, logo, text, transparency, and decorative details. Do not redesign the garment, hallucinate new details, alter logos/text, remove real tattoos, distort hands or arms, add/remove fingers, add arms, or over-smooth the face.\n            Completion requirement: all abnormal local artifacts should be removed, while real tattoos, natural skin, garment details, identity, crop, background, and style remain unchanged."
+      ]
+    },
+    {
+      "id": "CR Text Concatenate.1",
+      "type": "CR Text Concatenate",
+      "pos": [
+        7595.934689513449,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        124
+      ],
+      "flags": {},
+      "order": 90,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text1",
+          "shape": 7,
+          "type": "STRING",
+          "link": 165
+        },
+        {
+          "name": "text2",
+          "shape": 7,
+          "type": "STRING",
+          "link": 166
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "*",
+          "links": [
+            167
+          ]
+        },
+        {
+          "name": "show_help",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CR Text Concatenate",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": "CLIPTextEncode.1",
+      "type": "CLIPTextEncode",
+      "pos": [
+        7965.934255381464,
+        129.99996815375277
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 91,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 168
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 167
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            173,
+            175
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": "easy int.1",
+      "type": "easy int",
+      "pos": [
+        100.00129661763822,
+        3841.9997268846764
+      ],
+      "size": [
+        270,
+        100
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "int",
+          "type": "INT",
+          "links": [
+            169
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "easy int",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        1600
+      ]
+    },
+    {
+      "id": "LayerUtility: ImageScaleByAspectRatio V2.1",
+      "type": "LayerUtility: ImageScaleByAspectRatio V2",
+      "pos": [
+        6785.933897149969,
+        559.9999398414335
+      ],
+      "size": [
+        276.03125,
+        420
+      ],
+      "flags": {},
+      "order": 83,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 170
+        },
+        {
+          "name": "mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": null
+        },
+        {
+          "name": "scale_to_length",
+          "type": "INT",
+          "widget": {
+            "name": "scale_to_length"
+          },
+          "link": 169
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            171
+          ]
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "name": "original_size",
+          "type": "BOX",
+          "links": null
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "links": [
+            180,
+            182
+          ]
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": [
+            181,
+            183
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LayerUtility: ImageScaleByAspectRatio V2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "original",
+        1,
+        1,
+        "crop",
+        "lanczos",
+        "16",
+        "longest",
+        1024,
+        "#000000"
+      ],
+      "color": "rgba(38, 73, 116, 0.7)"
+    },
+    {
+      "id": "VAEEncode.2",
+      "type": "VAEEncode",
+      "pos": [
+        7225.933923977722,
+        342.000034928573
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 87,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 171
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 172
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            174,
+            176
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEEncode",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "ReferenceLatent.4",
+      "type": "ReferenceLatent",
+      "pos": [
+        8465.934163174259,
+        129.99996815375277
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 92,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 173
+        },
+        {
+          "name": "latent",
+          "shape": 7,
+          "type": "LATENT",
+          "link": 174
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            178
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReferenceLatent",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "ReferenceLatent.5",
+      "type": "ReferenceLatent",
+      "pos": [
+        8465.934163174259,
+        305.9999563910843
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 93,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 175
+        },
+        {
+          "name": "latent",
+          "shape": 7,
+          "type": "LATENT",
+          "link": 176
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            179
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReferenceLatent",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "CFGGuider.1",
+      "type": "CFGGuider",
+      "pos": [
+        8705.934136909815,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        124
+      ],
+      "flags": {},
+      "order": 94,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 177
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 178
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 179
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            185
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CFGGuider",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        1
+      ]
+    },
+    {
+      "id": "KSamplerSelect.1",
+      "type": "KSamplerSelect",
+      "pos": [
+        100.00129661763822,
+        4029.9996538254004
+      ],
+      "size": [
+        270,
+        76
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            186
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSamplerSelect",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "euler"
+      ]
+    },
+    {
+      "id": "Flux2Scheduler.1",
+      "type": "Flux2Scheduler",
+      "pos": [
+        7225.933923977722,
+        517.9998732074407
+      ],
+      "size": [
+        270,
+        132
+      ],
+      "flags": {},
+      "order": 88,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 180
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 181
+        }
+      ],
+      "outputs": [
+        {
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            187
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Flux2Scheduler",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        5,
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": "EmptyFlux2LatentImage.1",
+      "type": "EmptyFlux2LatentImage",
+      "pos": [
+        7225.933923977722,
+        753.9999298578934
+      ],
+      "size": [
+        270,
+        132
+      ],
+      "flags": {},
+      "order": 89,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 182
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 183
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            188
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyFlux2LatentImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": "SamplerCustomAdvanced.1",
+      "type": "SamplerCustomAdvanced",
+      "pos": [
+        9075.935018703225,
+        129.99996649828307
+      ],
+      "size": [
+        225,
+        392
+      ],
+      "flags": {},
+      "order": 95,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "noise",
+          "type": "NOISE",
+          "link": 184
+        },
+        {
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 185
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 186
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 187
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 188
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            189
+          ]
+        },
+        {
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustomAdvanced",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "LayerUtility: PurgeVRAM V2.3",
+      "type": "LayerUtility: PurgeVRAM V2",
+      "pos": [
+        9355.83349988214,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        128
+      ],
+      "flags": {},
+      "order": 96,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "anything",
+          "type": "*",
+          "link": 189
+        }
+      ],
+      "outputs": [
+        {
+          "name": "any",
+          "type": "*",
+          "links": [
+            205
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LayerUtility: PurgeVRAM V2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        true,
+        true
+      ],
+      "color": "rgba(38, 73, 116, 0.7)"
+    },
+    {
+      "id": "SaveImage.0",
+      "type": "SaveImage",
+      "pos": [
+        600.0024040781445,
+        1589.9996959095429
+      ],
+      "size": [
+        270,
+        308
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 260
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "multiview_v4/21_16/00_input_char"
+      ]
+    },
+    {
+      "id": "SaveImage.1",
+      "type": "SaveImage",
+      "pos": [
+        600.0024040781445,
+        365.99994982497356
+      ],
+      "size": [
+        270,
+        308
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 191
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "multiview_v4/21_16/01_input_cloth"
+      ]
+    },
+    {
+      "id": "DrawMaskOnImage.0",
+      "type": "DrawMaskOnImage",
+      "pos": [
+        1476.035156614429,
+        342.000034928573
+      ],
+      "size": [
+        270,
+        152
+      ],
+      "flags": {},
+      "order": 48,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 192
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 193
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            194
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DrawMaskOnImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "0, 255, 0",
+        "cpu"
+      ]
+    },
+    {
+      "id": "SaveImage.2",
+      "type": "SaveImage",
+      "pos": [
+        1942.0580755053338,
+        256.51417454755403
+      ],
+      "size": [
+        270,
+        308
+      ],
+      "flags": {},
+      "order": 52,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 194
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "multiview_v4/21_16/debug_upper_clothes_mask1"
+      ]
+    },
+    {
+      "id": "SaveImage.3",
+      "type": "SaveImage",
+      "pos": [
+        600.0024040781445,
+        765.9999060509017
+      ],
+      "size": [
+        270,
+        308
+      ],
+      "flags": {},
+      "order": 62,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 256
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "multiview_v4/21_16/02_naked_char"
+      ]
+    },
+    {
+      "id": "ImageCompositeMasked.1",
+      "type": "ImageCompositeMasked",
+      "pos": [
+        1476.035156614429,
+        573.9999120666098
+      ],
+      "size": [
+        270,
+        204
+      ],
+      "flags": {},
+      "order": 63,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "destination",
+          "type": "IMAGE",
+          "link": 196
+        },
+        {
+          "name": "source",
+          "type": "IMAGE",
+          "link": 257
+        },
+        {
+          "name": "mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": 198
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            199
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageCompositeMasked",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        0,
+        0,
+        false
+      ]
+    },
+    {
+      "id": "SaveImage.4",
+      "type": "SaveImage",
+      "pos": [
+        2210.5742461518767,
+        734.1792857774906
+      ],
+      "size": [
+        270,
+        308
+      ],
+      "flags": {},
+      "order": 66,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 199
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "multiview_v4/21_16/03_naked_char_restored"
+      ]
+    },
+    {
+      "id": "SaveImage.5",
+      "type": "SaveImage",
+      "pos": [
+        4935.936217768352,
+        543.9998216256253
+      ],
+      "size": [
+        270,
+        308
+      ],
+      "flags": {},
+      "order": 74,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 200
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "multiview_v4/21_16/04_vton_raw"
+      ]
+    },
+    {
+      "id": "DrawMaskOnImage.1",
+      "type": "DrawMaskOnImage",
+      "pos": [
+        6415.934481240417,
+        405.99994544756635
+      ],
+      "size": [
+        270,
+        152
+      ],
+      "flags": {},
+      "order": 81,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 258
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 202
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            203
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DrawMaskOnImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "0, 255, 0",
+        "cpu"
+      ]
+    },
+    {
+      "id": "SaveImage.6",
+      "type": "SaveImage",
+      "pos": [
+        6785.934796900752,
+        1207.999703973127
+      ],
+      "size": [
+        270,
+        308
+      ],
+      "flags": {},
+      "order": 85,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 203
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "multiview_v4/21_16/05_union_mask_on_char"
+      ]
+    },
+    {
+      "id": "SaveImage.7",
+      "type": "SaveImage",
+      "pos": [
+        6785.934796900752,
+        1019.9997770324031
+      ],
+      "size": [
+        270,
+        308
+      ],
+      "flags": {},
+      "order": 84,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 204
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "multiview_v4/21_16/06_union_mask_restoration"
+      ]
+    },
+    {
+      "id": "VAEDecode.1",
+      "type": "VAEDecode",
+      "pos": [
+        9725.83349688074,
+        129.99996815375277
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 97,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 205
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 206
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            207
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "ImageSmartSharpen+.0",
+      "type": "ImageSmartSharpen+",
+      "pos": [
+        9965.832500572484,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        184
+      ],
+      "flags": {},
+      "order": 98,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 207
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            208,
+            214,
+            217
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageSmartSharpen+",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        7,
+        0.75,
+        4,
+        1
+      ]
+    },
+    {
+      "id": "SaveImage.8",
+      "type": "SaveImage",
+      "pos": [
+        10335.83343012528,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        308
+      ],
+      "flags": {},
+      "order": 99,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 208
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "multiview_v4/21_16/07_final"
+      ]
+    },
+    {
+      "id": "INPAINT_ExpandMask.1",
+      "type": "INPAINT_ExpandMask",
+      "pos": [
+        1476.035156614429,
+        849.9998893604235
+      ],
+      "size": [
+        270,
+        156
+      ],
+      "flags": {},
+      "order": 49,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 209
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": [
+            210,
+            261
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "INPAINT_ExpandMask",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        5,
+        0,
+        "gaussian"
+      ]
+    },
+    {
+      "id": "Mask Invert.0",
+      "type": "Mask Invert",
+      "pos": [
+        1926.690353943659,
+        864.1050070074058
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 53,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "masks",
+          "type": "MASK",
+          "link": 210
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASKS",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Mask Invert",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "JoinImageWithAlpha.0",
+      "type": "JoinImageWithAlpha",
+      "pos": [
+        2259.602876891889,
+        393.56975000951473
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 54,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 211
+        },
+        {
+          "name": "alpha",
+          "type": "MASK",
+          "link": 261
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            213
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "JoinImageWithAlpha",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "ColorMatch.0",
+      "type": "ColorMatch",
+      "pos": [
+        10332.762280785939,
+        473.9422639807832
+      ],
+      "size": [
+        270,
+        180
+      ],
+      "flags": {},
+      "order": 100,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image_ref",
+          "type": "IMAGE",
+          "link": 213
+        },
+        {
+          "name": "image_target",
+          "type": "IMAGE",
+          "link": 214
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            218
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ColorMatch",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "mkl",
+        0.3,
+        true
+      ]
+    },
+    {
+      "id": "INPAINT_ExpandMask.2",
+      "type": "INPAINT_ExpandMask",
+      "pos": [
+        5435.934925893436,
+        305.9999563910843
+      ],
+      "size": [
+        270,
+        156
+      ],
+      "flags": {},
+      "order": 76,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 215
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": [
+            216
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "INPAINT_ExpandMask",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        5,
+        0,
+        "gaussian"
+      ]
+    },
+    {
+      "id": "Mask Invert.1",
+      "type": "Mask Invert",
+      "pos": [
+        5805.9343418029885,
+        285.9999960694039
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 78,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "masks",
+          "type": "MASK",
+          "link": 216
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASKS",
+          "type": "MASK",
+          "links": [
+            219
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Mask Invert",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "ImageCompositeMasked.2",
+      "type": "ImageCompositeMasked",
+      "pos": [
+        10705.833445868688,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        204
+      ],
+      "flags": {},
+      "order": 101,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "destination",
+          "type": "IMAGE",
+          "link": 217
+        },
+        {
+          "name": "source",
+          "type": "IMAGE",
+          "link": 218
+        },
+        {
+          "name": "mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": 219
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            220
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageCompositeMasked",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        0,
+        0,
+        false
+      ]
+    },
+    {
+      "id": "SaveImage.9",
+      "type": "SaveImage",
+      "pos": [
+        11075.833386632863,
+        129.99996815375277
+      ],
+      "size": [
+        270,
+        308
+      ],
+      "flags": {},
+      "order": 102,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 220
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "multiview_v4/21_16/08_final_bg_color_refined"
+      ]
+    },
+    {
+      "id": 1,
+      "type": "ReferenceLatent",
+      "pos": [
+        -1887.378658512128,
+        1971.2942441177765
+      ],
+      "size": [
+        204.134765625,
+        46
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 39,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "conditioning",
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 221
+        },
+        {
+          "label": "latent",
+          "name": "latent",
+          "shape": 7,
+          "type": "LATENT",
+          "link": 222
+        }
+      ],
+      "outputs": [
+        {
+          "label": "CONDITIONING",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            227
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReferenceLatent",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.5.2"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {},
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 2,
+      "type": "VAEEncode",
+      "pos": [
+        -2058.6999766640256,
+        1915.2393595751455
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 33,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 223
+        },
+        {
+          "label": "VAE",
+          "name": "vae",
+          "type": "VAE",
+          "link": 224
+        }
+      ],
+      "outputs": [
+        {
+          "label": "Latent",
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            222,
+            232
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEEncode",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.5.2"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {},
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 3,
+      "type": "CFGGuider",
+      "pos": [
+        -870.0236215488894,
+        1322.2905471850095
+      ],
+      "size": [
+        225,
+        124
+      ],
+      "flags": {},
+      "order": 47,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "模型",
+          "name": "model",
+          "type": "MODEL",
+          "link": 225
+        },
+        {
+          "label": "正面条件",
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 226
+        },
+        {
+          "label": "负面条件",
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 227
+        }
+      ],
+      "outputs": [
+        {
+          "label": "引导",
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            234
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CFGGuider",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {
+          "cfg": true
+        },
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [
+        1
+      ]
+    },
+    {
+      "id": 4,
+      "type": "RandomNoise",
+      "pos": [
+        -802.5544397621298,
+        1274.6298392330132
+      ],
+      "size": [
+        210,
+        82
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "noise_seed",
+          "type": "INT",
+          "widget": {
+            "name": "noise_seed"
+          },
+          "link": 228
+        }
+      ],
+      "outputs": [
+        {
+          "label": "噪波生成",
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            233
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RandomNoise",
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "noise_seed": true
+          },
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {
+          "noise_seed": true
+        },
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [
+        746,
+        "fixed"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 5,
+      "type": "KSamplerSelect",
+      "pos": [
+        -868.3332897445398,
+        1464.0786740764693
+      ],
+      "size": [
+        225,
+        76
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "采样器",
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            235
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSamplerSelect",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {
+          "sampler_name": true
+        },
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [
+        "euler"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "Flux2Scheduler",
+      "pos": [
+        -867.9338003968842,
+        1577.6716105976634
+      ],
+      "size": [
+        225,
+        132
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 41,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "steps",
+          "name": "steps",
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "label": "width",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 229
+        },
+        {
+          "label": "height",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 230
+        }
+      ],
+      "outputs": [
+        {
+          "label": "SIGMAS",
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            236
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Flux2Scheduler",
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "width": true,
+            "height": true
+          },
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {
+          "width": true,
+          "steps": true,
+          "height": true
+        },
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [
+        5,
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": 7,
+      "type": "ReferenceLatent",
+      "pos": [
+        -1878.700924137128,
+        1915.239556617777
+      ],
+      "size": [
+        204.134765625,
+        46
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 40,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "conditioning",
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 231
+        },
+        {
+          "label": "latent",
+          "name": "latent",
+          "shape": 7,
+          "type": "LATENT",
+          "link": 232
+        }
+      ],
+      "outputs": [
+        {
+          "label": "CONDITIONING",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            226
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReferenceLatent",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.5.2"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {},
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 9,
+      "type": "CLIPLoader",
+      "pos": [
+        -2071.558015187098,
+        1466.5321445032746
+      ],
+      "size": [
+        225,
+        106
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            244
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "models": [
+          {
+            "directory_invalid": true,
+            "name": "qwen_3_8b_fp8mixed.safetensors",
+            "directory": "text_encoders",
+            "url": "https://huggingface.co/Comfy-Org/flux2-klein-9B/resolve/main/split_files/text_encoders/qwen_3_8b_fp8mixed.safetensors"
+          }
+        ],
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "widget_ue_connectable": {
+          "clip_name": true,
+          "type": true,
+          "device": true
+        },
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "tabXOffset": 10
+      },
+      "widgets_values": [
+        "qwen_3_8b_fp8mixed.safetensors",
+        "flux2",
+        "default"
+      ],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 10,
+      "type": "VAELoader",
+      "pos": [
+        -1812.1370707587266,
+        1471.1192239535249
+      ],
+      "size": [
+        225,
+        76
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            224,
+            241
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "models": [
+          {
+            "name": "flux2-vae.safetensors",
+            "directory": "vae",
+            "url": "https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/vae/flux2-vae.safetensors"
+          }
+        ],
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "widget_ue_connectable": {
+          "vae_name": true
+        },
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "tabXOffset": 10
+      },
+      "widgets_values": [
+        "flux2-vae.safetensors"
+      ],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 11,
+      "type": "ConditioningZeroOut",
+      "pos": [
+        -1147.2639172892934,
+        1460.0721445734566
+      ],
+      "size": [
+        140,
+        26
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 30,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "条件",
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 238
+        }
+      ],
+      "outputs": [
+        {
+          "label": "条件",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            221
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ConditioningZeroOut",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {},
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 12,
+      "type": "LayerUtility: PurgeVRAM V2",
+      "pos": [
+        -1141.628579139435,
+        1529.9751962894893
+      ],
+      "size": [
+        223.95976972428116,
+        82
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 56,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "anything",
+          "type": "*",
+          "link": 239
+        }
+      ],
+      "outputs": [
+        {
+          "name": "any",
+          "type": "*",
+          "links": [
+            240
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LayerUtility: PurgeVRAM V2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.5.2"
+        },
+        "cnr_id": "comfyui_layerstyle",
+        "ver": "d94bef1ee5ed3656f5ff1bb2830a4ffd94f40935"
+      },
+      "widgets_values": [
+        true,
+        true
+      ],
+      "color": "#2a363b",
+      "bgcolor": "#3f5159"
+    },
+    {
+      "id": 13,
+      "type": "VAEDecode",
+      "pos": [
+        -1143.5771686447736,
+        1597.0656760144611
+      ],
+      "size": [
+        140,
+        46
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 58,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "Latent",
+          "name": "samples",
+          "type": "LATENT",
+          "link": 240
+        },
+        {
+          "label": "VAE",
+          "name": "vae",
+          "type": "VAE",
+          "link": 241
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            247
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {},
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [],
+      "color": "#332922",
+      "bgcolor": "#593930"
+    },
+    {
+      "id": 14,
+      "type": "EmptyFlux2LatentImage",
+      "pos": [
+        -857.2370570203103,
+        1736.7698129958762
+      ],
+      "size": [
+        210,
+        106
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 42,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "width",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 242
+        },
+        {
+          "label": "height",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 243
+        },
+        {
+          "label": "batch_size",
+          "name": "batch_size",
+          "type": "INT",
+          "widget": {
+            "name": "batch_size"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            237
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyFlux2LatentImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {
+          "batch_size": true,
+          "width": true,
+          "height": true
+        },
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ],
+      "color": "#233",
+      "bgcolor": "#355"
+    },
+    {
+      "id": 15,
+      "type": "Seed (rgthree)",
+      "pos": [
+        -1157.1017053792857,
+        1286.5614435916705
+      ],
+      "size": [
+        252.6875,
+        130
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "dir": 4,
+          "label": "随机种",
+          "name": "SEED",
+          "shape": 3,
+          "type": "INT",
+          "links": [
+            228
+          ]
+        }
+      ],
+      "properties": {
+        "randomMax": 1125899906842624,
+        "randomMin": 0,
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.5.2"
+        },
+        "aux_id": "rgthree/rgthree-comfy",
+        "ver": "8ff50e4521881eca1fe26aec9615fc9362474931",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        -1,
+        "",
+        "",
+        ""
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 17,
+      "type": "UNETLoader",
+      "pos": [
+        -2066.6117852159623,
+        1291.6057463981538
+      ],
+      "size": [
+        440.140625,
+        82
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "模型",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            251
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader",
+        "ue_properties": {
+          "version": "7.5.2",
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.9.2"
+      },
+      "widgets_values": [
+        "flux-2-klein/Flux2-Klein-9B-True-v2-bf16.safetensors",
+        "default"
+      ],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 18,
+      "type": "ImageScaleToTotalPixels",
+      "pos": [
+        -2359.263525230179,
+        2123.023756525019
+      ],
+      "size": [
+        225,
+        106
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 28,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 245
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageScaleToTotalPixels",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {
+          "megapixels": true,
+          "resolution_steps": true,
+          "upscale_method": true
+        },
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [
+        "lanczos",
+        1.2,
+        1
+      ],
+      "color": "#233",
+      "bgcolor": "#355"
+    },
+    {
+      "id": 19,
+      "type": "GetImageSize",
+      "pos": [
+        -1922.3493436712233,
+        1582.4188456872894
+      ],
+      "size": [
+        225,
+        124
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 34,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 246
+        }
+      ],
+      "outputs": [
+        {
+          "label": "宽度",
+          "name": "width",
+          "type": "INT",
+          "links": [
+            229,
+            242,
+            248
+          ]
+        },
+        {
+          "label": "高度",
+          "name": "height",
+          "type": "INT",
+          "links": [
+            230,
+            243,
+            249
+          ]
+        },
+        {
+          "name": "batch_size",
+          "type": "INT",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GetImageSize",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {},
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [],
+      "color": "#233",
+      "bgcolor": "#355"
+    },
+    {
+      "id": 20,
+      "type": "ImageResizeKJv2",
+      "pos": [
+        -1112.8807386352985,
+        1698.4800074242785
+      ],
+      "size": [
+        264.48550698327927,
+        348
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 59,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 247
+        },
+        {
+          "label": "遮罩",
+          "name": "mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": null
+        },
+        {
+          "label": "宽度",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 248
+        },
+        {
+          "label": "高度",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 249
+        },
+        {
+          "label": "缩放方法",
+          "name": "upscale_method",
+          "type": "COMBO",
+          "widget": {
+            "name": "upscale_method"
+          },
+          "link": null
+        },
+        {
+          "label": "固定宽高比",
+          "name": "keep_proportion",
+          "type": "COMBO",
+          "widget": {
+            "name": "keep_proportion"
+          },
+          "link": null
+        },
+        {
+          "label": "填充颜色",
+          "name": "pad_color",
+          "type": "STRING",
+          "widget": {
+            "name": "pad_color"
+          },
+          "link": null
+        },
+        {
+          "label": "裁剪位置",
+          "name": "crop_position",
+          "type": "COMBO",
+          "widget": {
+            "name": "crop_position"
+          },
+          "link": null
+        },
+        {
+          "label": "因数",
+          "name": "divisible_by",
+          "type": "INT",
+          "widget": {
+            "name": "divisible_by"
+          },
+          "link": null
+        },
+        {
+          "label": "设备",
+          "name": "device",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            253,
+            254,
+            255,
+            256,
+            257,
+            258
+          ]
+        },
+        {
+          "label": "宽度",
+          "name": "width",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "label": "高度",
+          "name": "height",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "label": "遮罩",
+          "name": "mask",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "图像缩放KJ v2",
+      "properties": {
+        "Node name for S&R": "ImageResizeKJv2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfyui-kjnodes",
+        "ver": "35a5a1ffea9061e698d1a742ac071b287b843dd3"
+      },
+      "widgets_values": [
+        512,
+        512,
+        "lanczos",
+        "pad_edge_pixel",
+        "0, 0, 0",
+        "center",
+        1,
+        "cpu"
+      ],
+      "color": "#233",
+      "bgcolor": "#355"
+    },
+    {
+      "id": 24,
+      "type": "SaveImage",
+      "pos": [
+        -1247.9405444320037,
+        1861.7455765220516
+      ],
+      "size": [
+        433.703125,
+        729.21875
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 252
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image_urls",
+          "type": "STRING"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.0.1"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.10.0",
+        "widget_ue_connectable": {
+          "filename_prefix": true
+        }
+      },
+      "widgets_values": [
+        "01_reshaped"
+      ],
+      "shape": 1
+    },
+    {
+      "id": 22,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        -2512.271544385778,
+        1292.9162334136086
+      ],
+      "size": [
+        350.265625,
+        104
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 251
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            225
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraLoaderModelOnly",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.9.2"
+      },
+      "widgets_values": [
+        "F2K_9bb-一致性consist_20260225.safetensors",
+        0.5
+      ]
+    },
+    {
+      "id": 16,
+      "type": "CLIPTextEncode",
+      "pos": [
+        -1553.2475791261895,
+        1278.206357820637
+      ],
+      "size": [
+        351.84375,
+        481.578125
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "CLIP",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 244
+        }
+      ],
+      "outputs": [
+        {
+          "label": "条件",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            231,
+            238
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {
+          "text": true
+        },
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [
+        "imary task: completely remove the original visible upper garment within the editable upper-body and arm region. No visible remnants of the original upper clothing should remain, including collar, neckline fabric, sleeves, cuffs, straps, logos, patterns, buttons, seams, and upper dress bodice.\n        Edit only the person's upper-garment region. Remove the visible original upper clothing to create a naked upper-body and naked arm base for later virtual try-on. Reconstruct only necessary natural skin, shoulders, neck, arms, and a naked upper-body and naked arm base.\n        Preserve the person's identity, face, hairstyle, body shape, pose, hands, visible fingers, arm quantity, skin tone, image style, lighting, background, lower-body clothing, shoes, accessories, and all non-upper-garment regions.\n        Keep the same visible body range as the input. Do not zoom out, change a portrait into a full-body image, reveal hidden or ambiguous body parts, add limbs, add fingers, remove fingers, or create artificial arm/hand shadows.\n        Completion requirement: the upper-garment region should contain no remaining original clothing fragments, the upper-body and arm region should be completely naked.\n        \"\"\""
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 8,
+      "type": "SamplerCustomAdvanced",
+      "pos": [
+        -612.1490487995852,
+        1284.5365544545061
+      ],
+      "size": [
+        225,
+        461.3125
+      ],
+      "flags": {},
+      "order": 51,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "噪波生成",
+          "name": "noise",
+          "type": "NOISE",
+          "link": 233
+        },
+        {
+          "label": "引导",
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 234
+        },
+        {
+          "label": "采样器",
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 235
+        },
+        {
+          "label": "Sigmas",
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 236
+        },
+        {
+          "label": "Latent",
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 237
+        }
+      ],
+      "outputs": [
+        {
+          "label": "输出",
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            239
+          ]
+        },
+        {
+          "label": "降噪输出",
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustomAdvanced",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.7"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {},
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": []
+    },
+    {
+      "id": "CR Text.2",
+      "type": "CR Text",
+      "pos": [
+        100.00129661763822,
+        2722.602982393622
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "*",
+          "links": [
+            162
+          ]
+        },
+        {
+          "name": "show_help",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CR Text",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "\n            You are a prompt-planning assistant for the refinement stage of a reference-conditioned virtual try-on pipeline.\n            Input:\n            1. Current try-on result image only.\n            Your task is to generate compact case-specific constraints for a minimal refinement step. Focus only on visible information in the current image. The goal is to improve local coherence and realism without changing structure.\n            Do not identify the person by name. Do not infer hidden body parts, hidden garment parts, or unseen design details. Do not suggest changing identity, pose, crop, background, style, or garment design.\n            Output valid JSON only. Use English only. Keep the entire output under 130 words. Use short phrases, not long sentences. Do not repeat information across fields. If a field is not applicable, use \"\".\n            Return exactly this JSON:\n            {\n            \"preserve_global\": \"Max 28 words. Identity, face, hairstyle, pose, hands/fingers, crop, visible body range, background, and style to preserve.\",\n            \"preserve_visible_garment\": \"Max 26 words. Visible garment category, silhouette, neckline, sleeves, material, colors, pattern, logo/text, and details to preserve.\",\n            \"refine_targets\": \"Max 30 words. Local issues to improve: boundary blending, garment-body integration, lighting, skin tone, texture, wrinkles, seams, shadows, minor artifacts.\",\n            \"case_prompt_for_flux\": \"Max 50 words. A direct Flux2 clause for subtle refinement with minimal structural change.\"\n            }\n            Rules:\n            - Focus on local correction, not re-generation.\n            - If hands or fingers are visible, explicitly preserve the exact visible finger count and arrangement.\n            - If logo or text is visible and readable, preserve it exactly. If visible but unreadable, say 'unreadable visible text/logo'.\n            - If some body parts or garment regions are hidden, cropped, shadowed, or ambiguous, keep them unchanged.\n            - If no obvious artifact is visible, say refinement should be very subtle.`\n        "
+      ]
+    },
+    {
+      "id": 25,
+      "type": "SaveImage",
+      "pos": [
+        -642.2235186386333,
+        1842.568738208362
+      ],
+      "size": [
+        433.703125,
+        729.21875
+      ],
+      "flags": {},
+      "order": 60,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 253
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image_urls",
+          "type": "STRING"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.0.1"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.10.0",
+        "widget_ue_connectable": {
+          "filename_prefix": true
+        }
+      },
+      "widgets_values": [
+        "F2K编辑-%date:yyyyMMddhhmmss%"
+      ],
+      "shape": 1
+    },
+    {
+      "id": 21,
+      "type": "LayerUtility: ImageScaleByAspectRatio V2",
+      "pos": [
+        -1638.7682912174623,
+        2001.5500528539014
+      ],
+      "size": [
+        276.03125,
+        420
+      ],
+      "flags": {},
+      "order": 29,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 250
+        },
+        {
+          "name": "mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            223,
+            246,
+            252,
+            259,
+            260
+          ]
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "name": "original_size",
+          "type": "BOX",
+          "links": null
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "links": []
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LayerUtility: ImageScaleByAspectRatio V2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "original",
+        1,
+        1,
+        "crop",
+        "lanczos",
+        "16",
+        "longest",
+        1280,
+        "#000000"
+      ],
+      "color": "rgba(38, 73, 116, 0.7)"
+    },
+    {
+      "id": "LoadImage.2",
+      "type": "LoadImage",
+      "pos": [
+        48.60693205823554,
+        2441.936822559885
+      ],
+      "size": [
+        270,
+        332
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "multiview_input/input_3/21_16.png",
+        "image"
+      ]
+    },
+    {
+      "id": "LoadImage.0",
+      "type": "LoadImage",
+      "pos": [
+        -1436.4023434413393,
+        2933.8701646660643
+      ],
+      "size": [
+        270,
+        332
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            111,
+            191
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "加载图像(cloth)",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "Designated Test_Character and clothes/Pure Clothes/16.png",
+        "image"
+      ]
+    },
+    {
+      "id": 23,
+      "type": "LoadImage",
+      "pos": [
+        -1845.8909214664309,
+        2932.989908483353
+      ],
+      "size": [
+        331.421875,
+        480.109375
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            245,
+            250
+          ]
+        },
+        {
+          "label": "遮罩",
+          "name": "MASK",
+          "type": "MASK"
+        }
+      ],
+      "title": "加载图像(character)",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "image": true,
+            "upload": true
+          },
+          "input_ue_unconnectable": {},
+          "version": "7.1"
+        },
+        "cnr_id": "comfy-core",
+        "ver": "0.3.50",
+        "hasSecondTab": false,
+        "widget_ue_connectable": {
+          "image": true,
+          "upload": true
+        },
+        "secondTabText": "Send Back",
+        "enableTabs": false,
+        "secondTabOffset": 80,
+        "tabWidth": 65,
+        "secondTabWidth": 65,
+        "tabXOffset": 10
+      },
+      "widgets_values": [
+        "clipboard_2026-05-16_19-51.png",
+        "image"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    }
+  ],
+  "links": [
+    [
+      111,
+      "LoadImage.0",
+      0,
+      "ImageScaleToTotalPixels.0",
+      0,
+      "IMAGE"
+    ],
+    [
+      112,
+      "CR Text.0",
+      0,
+      "AILab_QwenVL.0",
+      2,
+      "STRING"
+    ],
+    [
+      113,
+      "ImageScaleToTotalPixels.0",
+      0,
+      "AILab_QwenVL.0",
+      0,
+      "IMAGE"
+    ],
+    [
+      114,
+      "AILab_QwenVL.0",
+      0,
+      "LayerUtility: PurgeVRAM V2.0",
+      0,
+      "STRING"
+    ],
+    [
+      115,
+      "CR Text.1",
+      0,
+      "CR Text Concatenate.0",
+      0,
+      "STRING"
+    ],
+    [
+      116,
+      "LayerUtility: PurgeVRAM V2.0",
+      0,
+      "CR Text Concatenate.0",
+      1,
+      "STRING"
+    ],
+    [
+      117,
+      "CR Text Concatenate.0",
+      0,
+      "easy showAnything.0",
+      0,
+      "*"
+    ],
+    [
+      118,
+      "UNETLoader.0",
+      0,
+      "LoraLoaderModelOnly.0",
+      0,
+      "MODEL"
+    ],
+    [
+      119,
+      "easy showAnything.0",
+      0,
+      "CLIPTextEncode.0",
+      1,
+      "STRING"
+    ],
+    [
+      120,
+      "CLIPLoader.0",
+      0,
+      "CLIPTextEncode.0",
+      0,
+      "CLIP"
+    ],
+    [
+      122,
+      "VAELoader.0",
+      0,
+      "VAEEncode.0",
+      1,
+      "VAE"
+    ],
+    [
+      123,
+      "CLIPTextEncode.0",
+      0,
+      "ReferenceLatent.0",
+      0,
+      "CONDITIONING"
+    ],
+    [
+      124,
+      "VAEEncode.0",
+      0,
+      "ReferenceLatent.0",
+      1,
+      "LATENT"
+    ],
+    [
+      125,
+      "ImageScaleToTotalPixels.0",
+      0,
+      "VAEEncode.1",
+      0,
+      "IMAGE"
+    ],
+    [
+      126,
+      "VAELoader.0",
+      0,
+      "VAEEncode.1",
+      1,
+      "VAE"
+    ],
+    [
+      127,
+      "ReferenceLatent.0",
+      0,
+      "ReferenceLatent.1",
+      0,
+      "CONDITIONING"
+    ],
+    [
+      128,
+      "VAEEncode.1",
+      0,
+      "ReferenceLatent.1",
+      1,
+      "LATENT"
+    ],
+    [
+      129,
+      "CLIPTextEncode.0",
+      0,
+      "ConditioningZeroOut.0",
+      0,
+      "CONDITIONING"
+    ],
+    [
+      130,
+      "ConditioningZeroOut.0",
+      0,
+      "ReferenceLatent.2",
+      0,
+      "CONDITIONING"
+    ],
+    [
+      131,
+      "VAEEncode.0",
+      0,
+      "ReferenceLatent.2",
+      1,
+      "LATENT"
+    ],
+    [
+      132,
+      "ReferenceLatent.2",
+      0,
+      "ReferenceLatent.3",
+      0,
+      "CONDITIONING"
+    ],
+    [
+      133,
+      "VAEEncode.1",
+      0,
+      "ReferenceLatent.3",
+      1,
+      "LATENT"
+    ],
+    [
+      134,
+      "LoraLoaderModelOnly.0",
+      0,
+      "CFGGuider.0",
+      0,
+      "MODEL"
+    ],
+    [
+      135,
+      "ReferenceLatent.1",
+      0,
+      "CFGGuider.0",
+      1,
+      "CONDITIONING"
+    ],
+    [
+      136,
+      "ReferenceLatent.3",
+      0,
+      "CFGGuider.0",
+      2,
+      "CONDITIONING"
+    ],
+    [
+      137,
+      "easy int.0",
+      0,
+      "LayerUtility: ImageScaleByAspectRatio V2.0",
+      2,
+      "INT"
+    ],
+    [
+      139,
+      "LayerUtility: ImageScaleByAspectRatio V2.0",
+      3,
+      "Flux2Scheduler.0",
+      0,
+      "INT"
+    ],
+    [
+      140,
+      "LayerUtility: ImageScaleByAspectRatio V2.0",
+      4,
+      "Flux2Scheduler.0",
+      1,
+      "INT"
+    ],
+    [
+      141,
+      "LayerUtility: ImageScaleByAspectRatio V2.0",
+      3,
+      "EmptyFlux2LatentImage.0",
+      0,
+      "INT"
+    ],
+    [
+      142,
+      "LayerUtility: ImageScaleByAspectRatio V2.0",
+      4,
+      "EmptyFlux2LatentImage.0",
+      1,
+      "INT"
+    ],
+    [
+      143,
+      "RandomNoise.0",
+      0,
+      "SamplerCustomAdvanced.0",
+      0,
+      "NOISE"
+    ],
+    [
+      144,
+      "CFGGuider.0",
+      0,
+      "SamplerCustomAdvanced.0",
+      1,
+      "GUIDER"
+    ],
+    [
+      145,
+      "KSamplerSelect.0",
+      0,
+      "SamplerCustomAdvanced.0",
+      2,
+      "SAMPLER"
+    ],
+    [
+      146,
+      "Flux2Scheduler.0",
+      0,
+      "SamplerCustomAdvanced.0",
+      3,
+      "SIGMAS"
+    ],
+    [
+      147,
+      "EmptyFlux2LatentImage.0",
+      0,
+      "SamplerCustomAdvanced.0",
+      4,
+      "LATENT"
+    ],
+    [
+      148,
+      "SamplerCustomAdvanced.0",
+      0,
+      "LayerUtility: PurgeVRAM V2.1",
+      0,
+      "LATENT"
+    ],
+    [
+      149,
+      "LayerUtility: PurgeVRAM V2.1",
+      0,
+      "VAEDecode.0",
+      0,
+      "LATENT"
+    ],
+    [
+      150,
+      "VAELoader.0",
+      0,
+      "VAEDecode.0",
+      1,
+      "VAE"
+    ],
+    [
+      151,
+      "easy sam3ModelLoader.0",
+      0,
+      "easy sam3ImageSegmentation.0",
+      0,
+      "EASY_SAM3_MODEL"
+    ],
+    [
+      152,
+      "LayerUtility: ImageScaleByAspectRatio V2.0",
+      0,
+      "easy sam3ImageSegmentation.0",
+      1,
+      "IMAGE"
+    ],
+    [
+      153,
+      "easy sam3ModelLoader.0",
+      0,
+      "easy sam3ImageSegmentation.1",
+      0,
+      "EASY_SAM3_MODEL"
+    ],
+    [
+      154,
+      "VAEDecode.0",
+      0,
+      "easy sam3ImageSegmentation.1",
+      1,
+      "IMAGE"
+    ],
+    [
+      155,
+      "easy sam3ImageSegmentation.0",
+      0,
+      "AddMask.0",
+      0,
+      "MASK"
+    ],
+    [
+      156,
+      "easy sam3ImageSegmentation.1",
+      0,
+      "AddMask.0",
+      1,
+      "MASK"
+    ],
+    [
+      157,
+      "AddMask.0",
+      0,
+      "Mask Fill Holes.0",
+      0,
+      "MASK"
+    ],
+    [
+      158,
+      "Mask Fill Holes.0",
+      0,
+      "INPAINT_ExpandMask.0",
+      0,
+      "MASK"
+    ],
+    [
+      160,
+      "VAEDecode.0",
+      0,
+      "ImageCompositeMasked.0",
+      1,
+      "IMAGE"
+    ],
+    [
+      161,
+      "INPAINT_ExpandMask.0",
+      0,
+      "ImageCompositeMasked.0",
+      2,
+      "MASK"
+    ],
+    [
+      162,
+      "CR Text.2",
+      0,
+      "AILab_QwenVL.1",
+      2,
+      "STRING"
+    ],
+    [
+      163,
+      "ImageCompositeMasked.0",
+      0,
+      "AILab_QwenVL.1",
+      0,
+      "IMAGE"
+    ],
+    [
+      164,
+      "AILab_QwenVL.1",
+      0,
+      "LayerUtility: PurgeVRAM V2.2",
+      0,
+      "STRING"
+    ],
+    [
+      165,
+      "CR Text.3",
+      0,
+      "CR Text Concatenate.1",
+      0,
+      "STRING"
+    ],
+    [
+      166,
+      "LayerUtility: PurgeVRAM V2.2",
+      0,
+      "CR Text Concatenate.1",
+      1,
+      "STRING"
+    ],
+    [
+      167,
+      "CR Text Concatenate.1",
+      0,
+      "CLIPTextEncode.1",
+      1,
+      "STRING"
+    ],
+    [
+      168,
+      "CLIPLoader.0",
+      0,
+      "CLIPTextEncode.1",
+      0,
+      "CLIP"
+    ],
+    [
+      169,
+      "easy int.1",
+      0,
+      "LayerUtility: ImageScaleByAspectRatio V2.1",
+      2,
+      "INT"
+    ],
+    [
+      170,
+      "ImageCompositeMasked.0",
+      0,
+      "LayerUtility: ImageScaleByAspectRatio V2.1",
+      0,
+      "IMAGE"
+    ],
+    [
+      171,
+      "LayerUtility: ImageScaleByAspectRatio V2.1",
+      0,
+      "VAEEncode.2",
+      0,
+      "IMAGE"
+    ],
+    [
+      172,
+      "VAELoader.0",
+      0,
+      "VAEEncode.2",
+      1,
+      "VAE"
+    ],
+    [
+      173,
+      "CLIPTextEncode.1",
+      0,
+      "ReferenceLatent.4",
+      0,
+      "CONDITIONING"
+    ],
+    [
+      174,
+      "VAEEncode.2",
+      0,
+      "ReferenceLatent.4",
+      1,
+      "LATENT"
+    ],
+    [
+      175,
+      "CLIPTextEncode.1",
+      0,
+      "ReferenceLatent.5",
+      0,
+      "CONDITIONING"
+    ],
+    [
+      176,
+      "VAEEncode.2",
+      0,
+      "ReferenceLatent.5",
+      1,
+      "LATENT"
+    ],
+    [
+      177,
+      "LoraLoaderModelOnly.0",
+      0,
+      "CFGGuider.1",
+      0,
+      "MODEL"
+    ],
+    [
+      178,
+      "ReferenceLatent.4",
+      0,
+      "CFGGuider.1",
+      1,
+      "CONDITIONING"
+    ],
+    [
+      179,
+      "ReferenceLatent.5",
+      0,
+      "CFGGuider.1",
+      2,
+      "CONDITIONING"
+    ],
+    [
+      180,
+      "LayerUtility: ImageScaleByAspectRatio V2.1",
+      3,
+      "Flux2Scheduler.1",
+      0,
+      "INT"
+    ],
+    [
+      181,
+      "LayerUtility: ImageScaleByAspectRatio V2.1",
+      4,
+      "Flux2Scheduler.1",
+      1,
+      "INT"
+    ],
+    [
+      182,
+      "LayerUtility: ImageScaleByAspectRatio V2.1",
+      3,
+      "EmptyFlux2LatentImage.1",
+      0,
+      "INT"
+    ],
+    [
+      183,
+      "LayerUtility: ImageScaleByAspectRatio V2.1",
+      4,
+      "EmptyFlux2LatentImage.1",
+      1,
+      "INT"
+    ],
+    [
+      184,
+      "RandomNoise.1",
+      0,
+      "SamplerCustomAdvanced.1",
+      0,
+      "NOISE"
+    ],
+    [
+      185,
+      "CFGGuider.1",
+      0,
+      "SamplerCustomAdvanced.1",
+      1,
+      "GUIDER"
+    ],
+    [
+      186,
+      "KSamplerSelect.1",
+      0,
+      "SamplerCustomAdvanced.1",
+      2,
+      "SAMPLER"
+    ],
+    [
+      187,
+      "Flux2Scheduler.1",
+      0,
+      "SamplerCustomAdvanced.1",
+      3,
+      "SIGMAS"
+    ],
+    [
+      188,
+      "EmptyFlux2LatentImage.1",
+      0,
+      "SamplerCustomAdvanced.1",
+      4,
+      "LATENT"
+    ],
+    [
+      189,
+      "SamplerCustomAdvanced.1",
+      0,
+      "LayerUtility: PurgeVRAM V2.3",
+      0,
+      "LATENT"
+    ],
+    [
+      191,
+      "LoadImage.0",
+      0,
+      "SaveImage.1",
+      0,
+      "IMAGE"
+    ],
+    [
+      192,
+      "LayerUtility: ImageScaleByAspectRatio V2.0",
+      0,
+      "DrawMaskOnImage.0",
+      0,
+      "IMAGE"
+    ],
+    [
+      193,
+      "easy sam3ImageSegmentation.0",
+      0,
+      "DrawMaskOnImage.0",
+      1,
+      "MASK"
+    ],
+    [
+      194,
+      "DrawMaskOnImage.0",
+      0,
+      "SaveImage.2",
+      0,
+      "IMAGE"
+    ],
+    [
+      196,
+      "LayerUtility: ImageScaleByAspectRatio V2.0",
+      0,
+      "ImageCompositeMasked.1",
+      0,
+      "IMAGE"
+    ],
+    [
+      198,
+      "easy sam3ImageSegmentation.0",
+      0,
+      "ImageCompositeMasked.1",
+      2,
+      "MASK"
+    ],
+    [
+      199,
+      "ImageCompositeMasked.1",
+      0,
+      "SaveImage.4",
+      0,
+      "IMAGE"
+    ],
+    [
+      200,
+      "VAEDecode.0",
+      0,
+      "SaveImage.5",
+      0,
+      "IMAGE"
+    ],
+    [
+      202,
+      "INPAINT_ExpandMask.0",
+      0,
+      "DrawMaskOnImage.1",
+      1,
+      "MASK"
+    ],
+    [
+      203,
+      "DrawMaskOnImage.1",
+      0,
+      "SaveImage.6",
+      0,
+      "IMAGE"
+    ],
+    [
+      204,
+      "ImageCompositeMasked.0",
+      0,
+      "SaveImage.7",
+      0,
+      "IMAGE"
+    ],
+    [
+      205,
+      "LayerUtility: PurgeVRAM V2.3",
+      0,
+      "VAEDecode.1",
+      0,
+      "LATENT"
+    ],
+    [
+      206,
+      "VAELoader.0",
+      0,
+      "VAEDecode.1",
+      1,
+      "VAE"
+    ],
+    [
+      207,
+      "VAEDecode.1",
+      0,
+      "ImageSmartSharpen+.0",
+      0,
+      "IMAGE"
+    ],
+    [
+      208,
+      "ImageSmartSharpen+.0",
+      0,
+      "SaveImage.8",
+      0,
+      "IMAGE"
+    ],
+    [
+      209,
+      "easy sam3ImageSegmentation.0",
+      0,
+      "INPAINT_ExpandMask.1",
+      0,
+      "MASK"
+    ],
+    [
+      210,
+      "INPAINT_ExpandMask.1",
+      0,
+      "Mask Invert.0",
+      0,
+      "MASK"
+    ],
+    [
+      211,
+      "LayerUtility: ImageScaleByAspectRatio V2.0",
+      0,
+      "JoinImageWithAlpha.0",
+      0,
+      "IMAGE"
+    ],
+    [
+      213,
+      "JoinImageWithAlpha.0",
+      0,
+      "ColorMatch.0",
+      0,
+      "IMAGE"
+    ],
+    [
+      214,
+      "ImageSmartSharpen+.0",
+      0,
+      "ColorMatch.0",
+      1,
+      "IMAGE"
+    ],
+    [
+      215,
+      "easy sam3ImageSegmentation.1",
+      0,
+      "INPAINT_ExpandMask.2",
+      0,
+      "MASK"
+    ],
+    [
+      216,
+      "INPAINT_ExpandMask.2",
+      0,
+      "Mask Invert.1",
+      0,
+      "MASK"
+    ],
+    [
+      217,
+      "ImageSmartSharpen+.0",
+      0,
+      "ImageCompositeMasked.2",
+      0,
+      "IMAGE"
+    ],
+    [
+      218,
+      "ColorMatch.0",
+      0,
+      "ImageCompositeMasked.2",
+      1,
+      "IMAGE"
+    ],
+    [
+      219,
+      "Mask Invert.1",
+      0,
+      "ImageCompositeMasked.2",
+      2,
+      "MASK"
+    ],
+    [
+      220,
+      "ImageCompositeMasked.2",
+      0,
+      "SaveImage.9",
+      0,
+      "IMAGE"
+    ],
+    [
+      221,
+      11,
+      0,
+      1,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      222,
+      2,
+      0,
+      1,
+      1,
+      "LATENT"
+    ],
+    [
+      223,
+      21,
+      0,
+      2,
+      0,
+      "IMAGE"
+    ],
+    [
+      224,
+      10,
+      0,
+      2,
+      1,
+      "VAE"
+    ],
+    [
+      225,
+      22,
+      0,
+      3,
+      0,
+      "MODEL"
+    ],
+    [
+      226,
+      7,
+      0,
+      3,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      227,
+      1,
+      0,
+      3,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      228,
+      15,
+      0,
+      4,
+      0,
+      "INT"
+    ],
+    [
+      229,
+      19,
+      0,
+      6,
+      1,
+      "INT"
+    ],
+    [
+      230,
+      19,
+      1,
+      6,
+      2,
+      "INT"
+    ],
+    [
+      231,
+      16,
+      0,
+      7,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      232,
+      2,
+      0,
+      7,
+      1,
+      "LATENT"
+    ],
+    [
+      233,
+      4,
+      0,
+      8,
+      0,
+      "NOISE"
+    ],
+    [
+      234,
+      3,
+      0,
+      8,
+      1,
+      "GUIDER"
+    ],
+    [
+      235,
+      5,
+      0,
+      8,
+      2,
+      "SAMPLER"
+    ],
+    [
+      236,
+      6,
+      0,
+      8,
+      3,
+      "SIGMAS"
+    ],
+    [
+      237,
+      14,
+      0,
+      8,
+      4,
+      "LATENT"
+    ],
+    [
+      238,
+      16,
+      0,
+      11,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      239,
+      8,
+      0,
+      12,
+      0,
+      "LATENT"
+    ],
+    [
+      240,
+      12,
+      0,
+      13,
+      0,
+      "LATENT"
+    ],
+    [
+      241,
+      10,
+      0,
+      13,
+      1,
+      "VAE"
+    ],
+    [
+      242,
+      19,
+      0,
+      14,
+      0,
+      "INT"
+    ],
+    [
+      243,
+      19,
+      1,
+      14,
+      1,
+      "INT"
+    ],
+    [
+      244,
+      9,
+      0,
+      16,
+      0,
+      "CLIP"
+    ],
+    [
+      245,
+      23,
+      0,
+      18,
+      0,
+      "IMAGE"
+    ],
+    [
+      246,
+      21,
+      0,
+      19,
+      0,
+      "IMAGE"
+    ],
+    [
+      247,
+      13,
+      0,
+      20,
+      0,
+      "IMAGE"
+    ],
+    [
+      248,
+      19,
+      0,
+      20,
+      2,
+      "INT"
+    ],
+    [
+      249,
+      19,
+      1,
+      20,
+      3,
+      "INT"
+    ],
+    [
+      250,
+      23,
+      0,
+      21,
+      0,
+      "IMAGE"
+    ],
+    [
+      251,
+      17,
+      0,
+      22,
+      0,
+      "MODEL"
+    ],
+    [
+      252,
+      21,
+      0,
+      24,
+      0,
+      "IMAGE"
+    ],
+    [
+      253,
+      20,
+      0,
+      25,
+      0,
+      "IMAGE"
+    ],
+    [
+      254,
+      20,
+      0,
+      "VAEEncode.0",
+      0,
+      "IMAGE"
+    ],
+    [
+      255,
+      20,
+      0,
+      "ImageCompositeMasked.0",
+      0,
+      "IMAGE"
+    ],
+    [
+      256,
+      20,
+      0,
+      "SaveImage.3",
+      0,
+      "IMAGE"
+    ],
+    [
+      257,
+      20,
+      0,
+      "ImageCompositeMasked.1",
+      1,
+      "IMAGE"
+    ],
+    [
+      258,
+      20,
+      0,
+      "DrawMaskOnImage.1",
+      0,
+      "IMAGE"
+    ],
+    [
+      259,
+      21,
+      0,
+      "LayerUtility: ImageScaleByAspectRatio V2.0",
+      0,
+      "IMAGE"
+    ],
+    [
+      260,
+      21,
+      0,
+      "SaveImage.0",
+      0,
+      "IMAGE"
+    ],
+    [
+      261,
+      "INPAINT_ExpandMask.1",
+      0,
+      "JoinImageWithAlpha.0",
+      1,
+      "MASK"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ue_links": [],
+    "ds": {
+      "scale": 1.5863092971715018,
+      "offset": [
+        -10438.943685529906,
+        -31.75482398681598
+      ]
+    },
+    "linearData": {
+      "inputs": [
+        [
+          "23",
+          "image"
+        ],
+        [
+          "LoadImage.0",
+          "image"
+        ]
+      ],
+      "outputs": [
+        "SaveImage.9"
+      ]
+    },
+    "linearMode": true,
+    "links_added_by_ue": [],
+    "frontendVersion": "1.42.15"
+  },
+  "version": 0.4
+}
