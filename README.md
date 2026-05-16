@@ -1,105 +1,116 @@
-# Virtual Try-On Pipeline 
+# Virtual Try-On Pipeline
 
-This repository contains a ComfyUI-based virtual try-on pipeline for garment-conditioned image editing. Given a target garment image and a person/character reference or prompt, the workflow generates a dressed character image while attempting to preserve person identity, body structure, and non-clothing regions. The project also includes an exploratory multi-view generation workflow for producing alternative viewing angles from a generated single-view result. The project was developed for local/HPC experimentation and for deployment on RunningHUB. The local workflows expose more debugging and multi-view functionality, while the RunningHUB workflow is simplified for online execution. 
+This repository contains a ComfyUI-based pipeline for garment-conditioned virtual try-on. Given a target garment image and a person or character reference, the workflow synthesizes a dressed image while preserving identity-related and non-garment visual attributes such as pose, face, hair, background, and global illumination. The repository also includes an experimental multi-view extension and an evaluation toolkit for comparing generated results against baseline methods.
 
-## Group Members 
+The project was developed for course-project research and experimentation on HKUST(GZ) HPC2. The RunningHUB workflow is a simplified deployment variant, while the local workflows expose additional debugging, batching, and multi-view functionality.
+
+## Contributors
+
 - Weifeng Chen
 - Yuk Yeung Wong
 - Boyi Zhang
 
-## Repository Layout 
-```text . 
-├── Install.md # Detailed installation and HPC2 running instructions
-├── environment.yml # Conda environment export used during development
-├── workflows/ # RunningHUB-compatible workflow files
-│   └── whole_workflow_runninghub.json
-├── workflows_local/ # Local ComfyUI workflows for testing/debugging
-└── README.md
-``` 
+## Repository Structure
 
-## Pipeline Overview 
-The full pipeline is organized around two usage modes. ### Single-view virtual try-on The single-view workflow takes a garment image and a person/character condition as input. It uses ComfyUI nodes for visual-language prompt extraction, segmentation/masking, inpainting or image editing, and image refinement. The intended output is a single edited try-on image in which the target garment is transferred onto the generated or referenced character. 
-### Multi-view generation 
-The local multi-view workflow is an exploratory extension. It uses the single-view try-on result and the target garment as visual references, then generates alternative views using view-conditioned prompts. This part is included as a bonus-style experiment and is not supported in the RunningHUB deployment because the required local nodes are unavailable online. 
+```text
+.
+├── README.md                         # Project overview and usage summary
+├── Install.md                        # Installation, model placement, and HPC2 instructions
+├── environment.yml                   # Conda environment export used during development
+├── run_gpu.sh                        # Reference ComfyUI launch script for HPC2
+├── workflows/
+│   └── whole_workflow_runninghub.json # RunningHUB-compatible single-view workflow
+├── workflows_local/
+│   ├── whole_workflow.json           # Local single-view virtual try-on workflow
+│   ├── multiview.json                # Experimental local multi-view workflow
+│   ├── run_vton_batch.py             # ComfyScript batch runner for single-view VTON
+│   ├── run_multiview_batch.py        # ComfyScript batch runner for multi-view generation
+│   ├── submit_vton_batch.sh          # Slurm batch submission script
+│   ├── submit_vton_single.sh         # Slurm single-range submission script
+│   └── submit_multiview_batch.sh     # Slurm multi-view submission script
+├── utils/
+│   ├── color_refine.py               # Post-processing utility for color refinement
+│   └── get_order.py                  # Utility script for ordering input cases
+└── test/
+    ├── README.md                     # Evaluation protocol documentation
+    ├── eval_pipeline.py              # Quantitative and VLM-based evaluation pipeline
+    ├── pairwise_vlm.py               # Pairwise VLM comparison script
+    ├── aggregate_results.py          # Result aggregation script
+    └── job_eval.sh                   # Slurm evaluation helper
+```
+
+The current structure separates deployment workflows, local research workflows, utility scripts, and evaluation code. This keeps the RunningHUB artifact independent from HPC-specific batch scripts and evaluation utilities.
+
+## Method Overview
+
+### Single-View Virtual Try-On
+
+The primary workflow performs upper-garment transfer through a reference-conditioned image-editing pipeline. It combines visual-language garment description, SAM-based garment-region segmentation, Flux2-Klein generation, reference-latent conditioning, mask composition, and local refinement. The intended output is a single dressed image in which the target garment is transferred while non-garment regions remain as stable as possible.
+
+### Multi-View Generation
+
+The multi-view workflow is an exploratory extension. It uses the single-view result and garment reference to generate view-conditioned prompts and synthesize alternative camera views. This component is retained as a research extension and is not part of the RunningHUB deployment, because several required local nodes and batch assumptions are unavailable in the online environment.
+
+### Evaluation
+
+The `test/` directory contains an evaluation pipeline that combines masked preservation metrics, CLIP-based garment similarity, VLM absolute scoring, and pairwise VLM comparison. See [test/README.md](test/README.md) for the expected data layout and metric definitions.
 
 ## Installation
-For full installation details, see [Install.md](Install.md). The project was tested mainly on HKUST(GZ) HPC2 with CUDA 12.8. The recommended local setup is: 
 
-1. Create and activate the Python 3.12 Conda environment.
+Detailed installation instructions are provided in [Install.md](Install.md). In brief, the recommended setup is:
+
+1. Create a Python 3.12 Conda environment.
 2. Install ComfyUI and ComfyUI-Manager.
-3. Install the required ComfyUI custom nodes.
-4. Download the required model checkpoints into the expected `ComfyUI/models/` subdirectories.
-5. Launch ComfyUI and load the corresponding workflow JSON file.
+3. Install the ComfyUI custom nodes listed in [Install.md](Install.md).
+4. Place the required model checkpoints under the expected `ComfyUI/models/` subdirectories.
+5. Launch ComfyUI and load the appropriate workflow JSON file.
 
-A Conda environment export is provided in [environment.yml](environment.yml), but it may still require manual adjustment depending on the platform, CUDA version, and installed ComfyUI nodes. 
+The environment was tested primarily on HKUST(GZ) HPC2 with CUDA 12.8. The provided `environment.yml` is a development snapshot and may require adjustment on other systems.
 
-## Required Models 
-The workflows expect several model families to be available under the ComfyUI model directory. Please refer to [Install.md](Install.md) for exact paths and file names. The main required components include: 
-- Flux2-Klein diffusion checkpoints
+## Required Model Families
+
+The workflows require the following model families, all of which should be placed under the local ComfyUI model directory:
+
+- Flux2-Klein diffusion checkpoint
 - Qwen3-VL model files for visual-language prompt extraction
-- Flux2-related LoRA checkpoints
-- SAM3.1 checkpoint for segmentation/masking
+- Flux2-Klein LoRA checkpoint for consistency editing
+- SAM3.1 checkpoint for segmentation
 - Flux2 text encoder
 - Flux2 VAE
 
-Because these model files are large and may have separate licenses or download restrictions, they are not included in this repository. 
+Large checkpoints are not included in this repository. Their download sources, filenames, and target paths are listed in [Install.md](Install.md).
 
-## Usage 
-### Option 1: Run locally with ComfyUI 
-Use the workflows in [`workflows_local/`](workflows_local/) for local testing and debugging. These workflows may depend on custom nodes that are not available on RunningHUB. General steps: 
+## Usage
 
-1. Start ComfyUI with the environment described in [Install.md](Install.md).
-2. Open the ComfyUI web interface.
-3. Load the desired JSON workflow from `workflows_local/`.
-4. Set the input garment/person paths and output directory.
-5. Run the workflow.
+### Local ComfyUI Execution
 
-Some batch scripts or workflows assume fixed input/output directories. Please check the comments inside the workflow or script before running. For the multi-view workflow, the output from the first-stage single-view/character-neutralization workflow must be placed in the expected input directory for the second-stage generation workflow. 
+Use the workflows under `workflows_local/` for local or HPC2 experiments.
 
-### Option 2: Run on RunningHUB 
-The workflow in [`workflows/whole_workflow_runninghub.json`](workflows/whole_workflow_runninghub.json) is designed for RunningHUB. You can either upload the workflow manually to RunningHUB or use the released application: [RunningHUB AI Application](https://www.runninghub.cn/post/2055684629914497025) 
-Recommended usage: 
-1. Choose **Run AI APP**.
-2. Upload the required input images according to the interface instructions.
-3. Run the workflow and inspect the final generated try-on result. Please ignore intermediate images shown during execution, because RunningHUB may expose intermediate previews after release. The workflow hides or disables some preview/save nodes to reduce unintended display of inappropriate intermediate results. RunningHUB usage must also follow its policy, including the prohibition of NSFW generation.
+```bash
+cd /hpc2hdd/home/dsaa2012_017/comfyui/ComfyUI
+source /hpc2hdd/home/dsaa2012_017/miniconda3/bin/activate py_312
+module load cuda/12.8
+python main.py --listen 0.0.0.0 --port 8188 --preview-method auto --enable-manager
+```
 
-## Notes and Limitations 
-- The RunningHUB version supports only the single-view workflow. 
-- Multi-view generation is available only in the local workflow because it depends on local custom nodes.
-- Local reproducibility depends heavily on the exact ComfyUI version, custom-node versions, CUDA version, and checkpoint placement.
-- Some generated images may exhibit color drift, garment-detail inconsistency, boundary artifacts, or imperfect preservation of body structure, especially in challenging poses or multi-view settings.
-- The workflows are designed for research/course-project experimentation rather than production deployment.
+Then open the ComfyUI interface, load `workflows_local/whole_workflow.json`, configure input paths, and run the workflow. For batch execution on HPC2, use the Slurm helpers in `workflows_local/` after adapting hard-coded dataset and ComfyUI paths if necessary.
 
-## Acknowledgements 
-We thank the developers of ComfyUI and the broader open-source image-generation community for releasing the tools, custom nodes, workflows, and models that made this project possible. We also thank our instructors and classmates for their feedback and support throughout the project. The project uses or builds upon multiple ComfyUI custom nodes, including but not limited to: 
-- [ComfyUI](https://github.com/comfyanonymous/ComfyUI) 
-- [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager) 
-- [ComfyScript](https://github.com/Chaoses-Ib/ComfyScript) 
-- [cg-use-everywhere](https://github.com/chrisgoringe/cg-use-everywhere) 
-- [comfy-image-saver](https://github.com/giriss/comfy-image-saver) 
-- [ComfyUI-Image-Saver](https://github.com/farizrifqi/ComfyUI-Image-Saver) 
-- [ComfyUI_Comfyroll_CustomNodes](https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes) 
-- [comfyui_controlnet_aux](https://github.com/Fannovel16/comfyui_controlnet_aux) 
-- [ComfyUI_Custom_Nodes_AlekPet](https://github.com/AlekPet/ComfyUI_Custom_Nodes_AlekPet) 
-- [ComfyUI_essentials](https://github.com/cubiq/ComfyUI_essentials) 
-- [ComfyUI_LayerStyle](https://github.com/chflame163/ComfyUI_LayerStyle) 
-- [ComfyUI_Qwen3-VL-Instruct](https://github.com/IuvenisSapiens/ComfyUI_Qwen3-VL-Instruct) 
-- [ComfyUI-QwenVL](https://github.com/1038lab/ComfyUI-QwenVL) 
-- [ComfyUI-QwenVL-MultiImage](https://github.com/hardik-uppal/ComfyUI-QwenVL-MultiImage) 
-- [Comfyui-QwenEditUtils](https://github.com/lrzjason/Comfyui-QwenEditUtils) 
-- [ComfyUI-Easy-Sam3](https://github.com/yolain/ComfyUI-Easy-Sam3) 
-- [ComfyUI-Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use) 
-- [ComfyUI-Inpaint-CropAndStitch](https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch) 
-- [comfyui-inpaint-nodes](https://github.com/Acly/comfyui-inpaint-nodes) 
-- [comfyui-impact-pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack) 
-- [ComfyUI-KJNodes](https://github.com/kijai/ComfyUI-KJNodes) 
-- [ComfyUI-llama-cpp_vlm](https://github.com/lihaoyun6/ComfyUI-llama-cpp_vlm) 
-- [ComfyUI-UltimateSDUpscale](https://github.com/ssitu/ComfyUI_UltimateSDUpscale) 
-- [ComfyUI-WD14-Tagger](https://github.com/pythongosssss/ComfyUI-WD14-Tagger) 
-- [ComfyUI-Logic](https://github.com/playboy-dongan/ComfyUI-Logic.git) 
-- [ComfyUI-qwenmultiangle](https://github.com/jtydhr88/ComfyUI-qwenmultiangle.git) 
-- [ComfyUI-CatVTON](https://github.com/pzc163/Comfyui-CatVTON) 
-- [ComfyUI-IDM-VTON](https://github.com/TemryL/ComfyUI-IDM-VTON) 
-- [IMAGDressing-ComfyUI](https://github.com/AIFSH/IMAGDressing-ComfyUI)
+### RunningHUB Execution
 
-Some listed nodes or baseline integrations may be disabled in the final workflow but were used during experimentation. 
+The workflow in `workflows/whole_workflow_runninghub.json` is designed for RunningHUB deployment. It can be uploaded manually or accessed through the released application:
+
+[RunningHUB AI Application](https://www.runninghub.cn/post/2055684629914497025)
+
+The RunningHUB version supports only the single-view workflow. Intermediate previews may be visible during execution depending on the platform interface; the final output should be used for assessment. Usage must follow RunningHUB platform policy and applicable model-license restrictions.
+
+## Limitations
+
+- The local and RunningHUB workflows are not identical, because RunningHUB does not provide every local custom node.
+- Reproducibility depends on ComfyUI version, custom-node versions, CUDA version, checkpoint placement, and model quantization settings.
+- The multi-view workflow is experimental and may suffer from identity drift, garment-detail inconsistency, and view-to-view geometry inconsistency.
+- Generated results can contain color shifts, boundary artifacts, inaccurate garment details, or imperfect body-structure preservation, especially for unusual poses, transparent garments, or back-view inputs.
+- The repository is intended for research and course-project experimentation rather than production deployment.
+
+## Acknowledgements
+
+This project builds on ComfyUI, ComfyUI-Manager, and multiple community-maintained ComfyUI custom nodes. The complete plugin inventory verified on the HPC2 environment is documented in [Install.md](Install.md). We thank the maintainers of these tools and the broader open-source image-generation community for making this work possible.

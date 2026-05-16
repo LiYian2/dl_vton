@@ -1,138 +1,266 @@
-# Install Instructions
-This file serves as the installation instruction on our Virtual Try On project on HKUST(GZ) HPC2. We do not guanrantee that it works on other platform. CUDA 12.8 is used for the project.
-## 1. Install Miniconda
+# Installation Guide
+
+This document describes the installation procedure used for the virtual try-on project on HKUST(GZ) HPC2. The reference environment uses Python 3.12 and CUDA 12.8. Other platforms may require changes to CUDA wheels, model paths, scheduler commands, and ComfyUI custom-node versions.
+
+## 1. Create the Python Environment
+
+Install Miniconda if it is not already available:
+
 ```bash
 curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash ~/Miniconda3-latest-Linux-x86_64.sh
 ```
-After installing Miniconda3 successfully, restart the bash, then
+
+Restart the shell, then create and activate the project environment:
 
 ```bash
-conda create py_312 python=3.12 -y
+conda create -n py_312 python=3.12 -y
 conda activate py_312
 ```
-Below is the command to get the environment export by conda, but we are not sure whether it works or not. If you don't want to use this, just skip this.
+
+The repository also provides a development environment snapshot:
 
 ```bash
 conda env create -f environment.yml
 conda activate py_312
-# The below installation would cost a long time. Please makesure cuda is available.
-pip install llama-cpp-python \
-  --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu128
 ```
+
+The exported environment is not guaranteed to be portable across CUDA versions or ComfyUI node revisions. If dependency conflicts occur, install the core ComfyUI requirements first, then install node-specific requirements incrementally.
+
 ## 2. Install ComfyUI
-```bash
-git clone https://github.com/comfyanonymous/ComfyUI
-cd ComfyUI/custom_nodes
-git clone https://github.com/ltdrdata/ComfyUI-Manager comfyui-manager
-cd ..
-python -m pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128 #only cuda versions smaller or equal than 12.8 are installed in Module.
-python -m pip install -r requirements.txt
-python -m pip install -r custom_nodes/comfyui-manager/requirements.txt
-cd ..
-echo "#!/bin/bash" > run_gpu.sh
-echo "cd ComfyUI" >> run_gpu.sh
-echo "source {Path_Of_Miniconda3}/miniconda3/bin/activate py_312" >> run_gpu.sh # Please fill in the path
-echo "module load cuda/12.8" >> run_gpu.sh
-echo "python main.py --listen 0.0.0.0 --port 8188 --enable-manager"
-chmod +x run_gpu.sh
 
-echo "#!/bin/bash" > run_cpu.sh
-echo "cd ComfyUI" >> run_cpu.sh
-echo "source {Path_Of_Miniconda3}/miniconda3/bin/activate py_312" >> run_gpu.sh # Please fill in the path
-echo "python main.py --listen 0.0.0.0 --port 8188 --cpu --enable-manager"
-chmod +x run_cpu.sh
+```bash
+git clone https://github.com/comfyanonymous/ComfyUI.git
+cd ComfyUI
+
+python -m pip install torch torchvision torchaudio \
+  --extra-index-url https://download.pytorch.org/whl/cu128
+python -m pip install -r requirements.txt
+
+cd custom_nodes
+git clone https://github.com/ltdrdata/ComfyUI-Manager.git comfyui-manager
+python -m pip install -r comfyui-manager/requirements.txt
 ```
 
-## 3. Install ComfyUI Plugins
-The most easy way to install all the required plugins are through [ComfyUI-Manager](https://github.com/Comfy-Org/ComfyUI-Manager). You may refer to `Run` part to open ComfyUI web page and open our workflow (*.json) and install all the required plugins accordingly. However, the network security policy on HPC-2 prohibits this. If so, please install manually accoding to their requirements.
-They are:
-- [cg-use-everywhere](https://github.com/chrisgoringe/cg-use-everywhere)
-- [ComfyUI-Image-Saver](https://github.com/farizrifqi/ComfyUI-Image-Saver)
-- [cg-use-everywhere](https://github.com/chrisgoringe/cg-use-everywhere)
-- [comfy-image-saver](https://github.com/giriss/comfy-image-saver)
-- [ComfyScript](https://github.com/Chaoses-Ib/ComfyScript)
-- [ComfyUI_Comfyroll_CustomNodes](https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes)
-- [comfyui_controlnet_aux](https://github.com/Fannovel16/comfyui_controlnet_aux)
-- [ComfyUI_Custom_Nodes_AlekPet](https://github.com/AlekPet/ComfyUI_Custom_Nodes_AlekPet)
-- [ComfyUI_essentials](https://github.com/cubiq/ComfyUI_essentials)
-- [ComfyUI_LayerStyle](https://github.com/chflame163/ComfyUI_LayerStyle)
-- [ComfyUI_Qwen3-VL-Instruct](https://github.com/IuvenisSapiens/ComfyUI_Qwen3-VL-Instruct)
-- [ComfyUI_UltimateSDUpscale](https://github.com/ssitu/ComfyUI_UltimateSDUpscale)
-- [ComfyUI-CatVTON](https://github.com/pzc163/Comfyui-CatVTON)
-- [ComfyUI-Custom-Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
-- [ComfyUI-Detail-Daemon](https://github.com/Jonseed/ComfyUI-Detail-Daemon)
-- [ComfyUI-Easy-Sam3](https://github.com/yolain/ComfyUI-Easy-Sam3)
-- [ComfyUI-Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use)
-- [ComfyUI-IDM-VTON](https://github.com/TemryL/ComfyUI-IDM-VTON)
-- [comfyui-impact-pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
-- [ComfyUI-Inpaint-CropAndStitch](https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch)
-- [comfyui-inpaint-nodes](https://github.com/Acly/comfyui-inpaint-nodes)
-- [ComfyUI-KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
-- [ComfyUI-llama-cpp_vlm](https://github.com/lihaoyun6/ComfyUI-llama-cpp_vlm)
-- [comfyui-manager](https://github.com/ltdrdata/ComfyUI-Manager)
-- [Comfyui-QwenEditUtils](https://github.com/lrzjason/Comfyui-QwenEditUtils)
-- [ComfyUI-QwenVL](https://github.com/1038lab/ComfyUI-QwenVL)
-- [ComfyUI-QwenVL-MultiImage](https://github.com/hardik-uppal/ComfyUI-QwenVL-MultiImage)
-- [ComfyUI-to-Python-Extension](https://github.com/pydn/ComfyUI-to-Python-Extension)
-- [ComfyUI-utils-nodes](https://github.com/zhangp365/ComfyUI-utils-nodes)
-- [comfyui-various](https://github.com/jamesWalker55/comfyui-various)
-- [ComfyUI-WanVideoWrapper](https://github.com/kijai/ComfyUI-WanVideoWrapper)
-- [ComfyUI-WD14-Tagger](https://github.com/pythongosssss/ComfyUI-WD14-Tagger)
-- [rgthree-comfy](https://github.com/rgthree/rgthree-comfy)
-- [was-node-suite-comfyui](https://github.com/WASasquatch/was-node-suite-comfyui)
-- [ComfyUI-Logic ](https://github.com/playboy-dongan/ComfyUI-Logic.git)
-- [ComfyUI-llama-cpp_vlm](https://github.com/lihaoyun6/ComfyUI-llama-cpp_vlm)
-- [ComfyUI-qwenmultiangle](https://github.com/jtydhr88/ComfyUI-qwenmultiangle.git)
-- [comfyui-idm-vton (disabled)](https://github.com/TemryL/ComfyUI-IDM-VTON)
-- [IMAGDressing-ComfyUI (disabled)](https://github.com/AIFSH/IMAGDressing-ComfyUI)
+On HPC2, the project uses the following ComfyUI root:
 
-Notably, `llama-cpp-python` should be installed manually by compiling.
+```text
+/hpc2hdd/home/dsaa2012_017/comfyui/ComfyUI
+```
+
+Adjust scripts if your ComfyUI checkout or Miniconda installation is located elsewhere.
+
+## 3. Install Custom Nodes
+
+The easiest installation route on a workstation is to start ComfyUI with ComfyUI-Manager, load the workflow JSON, and install missing nodes through the manager interface. On HPC2, network policy can make manager-based installation unreliable; manual `git clone` installation under `ComfyUI/custom_nodes/` is therefore recommended.
+
+The following custom-node inventory was verified from:
+
+```text
+/hpc2hdd/home/dsaa2012_017/comfyui/ComfyUI/custom_nodes
+```
+
+| Directory | Remote repository |
+| --- | --- |
+| `ComfyScript` | <https://github.com/Chaoses-Ib/ComfyScript.git> |
+| `ComfyUI-Custom-Scripts` | <https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git> |
+| `ComfyUI-Detail-Daemon` | <https://github.com/Jonseed/ComfyUI-Detail-Daemon.git> |
+| `ComfyUI-Easy-Sam3` | <https://github.com/yolain/ComfyUI-Easy-Sam3.git> |
+| `ComfyUI-Easy-Use` | <https://github.com/yolain/ComfyUI-Easy-Use.git> |
+| `ComfyUI-IDM-VTON` | <https://github.com/TemryL/ComfyUI-IDM-VTON.git> |
+| `ComfyUI-Inpaint-CropAndStitch` | <https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch.git> |
+| `ComfyUI-KJNodes` | <https://github.com/kijai/ComfyUI-KJNodes.git> |
+| `ComfyUI-Logic` | <https://github.com/playboy-dongan/ComfyUI-Logic.git> |
+| `ComfyUI-QwenVL` | <https://github.com/1038lab/ComfyUI-QwenVL.git> |
+| `ComfyUI-QwenVL-MultiImage` | <https://github.com/hardik-uppal/ComfyUI-QwenVL-MultiImage.git> |
+| `ComfyUI-String-Helper` | <https://github.com/liuqianhonga/ComfyUI-String-Helper.git> |
+| `ComfyUI-WD14-Tagger` | <https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git> |
+| `ComfyUI-WanVideoWrapper` | <https://github.com/kijai/ComfyUI-WanVideoWrapper.git> |
+| `ComfyUI-llama-cpp_vlm` | <https://github.com/lihaoyun6/ComfyUI-llama-cpp_vlm> |
+| `ComfyUI-qwenmultiangle` | <https://github.com/jtydhr88/ComfyUI-qwenmultiangle.git> |
+| `ComfyUI-to-Python-Extension` | <https://github.com/pydn/ComfyUI-to-Python-Extension.git> |
+| `ComfyUI-utils-nodes` | <https://github.com/zhangp365/ComfyUI-utils-nodes.git> |
+| `ComfyUI_Comfyroll_CustomNodes` | <https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git> |
+| `ComfyUI_Custom_Nodes_AlekPet` | <https://github.com/AlekPet/ComfyUI_Custom_Nodes_AlekPet.git> |
+| `ComfyUI_LayerStyle` | <https://github.com/chflame163/ComfyUI_LayerStyle.git> |
+| `ComfyUI_Qwen3-VL-Instruct` | <https://github.com/IuvenisSapiens/ComfyUI_Qwen3-VL-Instruct.git> |
+| `ComfyUI_UltimateSDUpscale` | <https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git> |
+| `ComfyUI_essentials` | <https://github.com/cubiq/ComfyUI_essentials.git> |
+| `Comfyui-QwenEditUtils` | <https://github.com/lrzjason/Comfyui-QwenEditUtils.git> |
+| `cg-use-everywhere` | <https://github.com/chrisgoringe/cg-use-everywhere> |
+| `comfy-image-saver` | <https://github.com/giriss/comfy-image-saver.git> |
+| `comfyui-impact-pack` | <https://github.com/ltdrdata/ComfyUI-Impact-Pack> |
+| `comfyui-inpaint-nodes` | <https://github.com/Acly/comfyui-inpaint-nodes> |
+| `comfyui-manager` | <https://github.com/ltdrdata/ComfyUI-Manager> |
+| `comfyui-various` | <https://github.com/jamesWalker55/comfyui-various> |
+| `comfyui_controlnet_aux` | <https://github.com/Fannovel16/comfyui_controlnet_aux/> |
+| `rgthree-comfy` | <https://github.com/rgthree/rgthree-comfy.git> |
+| `was-node-suite-comfyui` | <https://github.com/WASasquatch/was-node-suite-comfyui/> |
+
+Some installed repositories support baseline experiments, prompt utilities, or disabled exploratory workflows. The single-view workflow itself uses nodes from a smaller subset, including ComfyUI core nodes, ComfyUI_Qwen3-VL-Instruct or QwenVL-related nodes, ComfyUI_Comfyroll_CustomNodes, ComfyUI-Easy-Sam3, ComfyUI-Easy-Use, ComfyUI-KJNodes, ComfyUI_LayerStyle, comfyui-inpaint-nodes, rgthree-comfy, and image-saving utilities.
+
+`llama-cpp-python` may need manual installation with CUDA-specific wheels:
+
 ```bash
 conda activate py_312
 pip install llama-cpp-python \
   --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu128
 ```
-If you encounter packages error, you may refer to our [environment.yml](environment.yml)
 
-## 4. Download required models
+## 4. Download Required Models
 
-### 4.1 Under `diffusion_models` folder
-Download flux-2-klein checkpoints under ComfyUI/models/flux-2-klein/ . Say `ComfyUI/models/diffusion_models/flux-2-klein/F2K-9b-darkBeast_dbkBlitzV15_fp8.safetensors`
-For flux-2-klein models, you need to download `Flux2-Klein-9B-True-v2-bf16.safetensors`(https://huggingface.co/wikeeyang/Flux2-Klein-9B-True-V2) and `F2K-9b-miracleinNSFWGeneration_10Fp8.safetensors`(https://civitai.com/models/2453960/miraclein-nsfw-generation-and-edit-flux2klein).
+All paths below are shown with `ComfyUI/` as the checkout root.
 
-In default, we use `Flux2-Klein-9B-True-v2-bf16.safetensors` throughout our workflow. However, `F2K-9b-miracleinNSFWGeneration_10Fp8.safetensors` perform better in character neutralization. We encourage you to have a try but please do not do anything nasty.
+### 4.1 Diffusion Models
 
+Create the Flux2-Klein model directory:
 
-### 4.2 Under `LLM/Qwen-VL` folder
-Download [Qwen3-VL-4B-instrcut](https://huggingface.co/Qwen/Qwen3-VL-4B-Instruct) and put it under the folder, say `ComfyUI/models/LLM/Qwen-VL/Qwen3-VL-4B-Instruct`
-Put this also under in `ComfyUI/models/prompt_generator/LLM/Qwen-VL/` and `ComfyUI/models/prompt_generator/`, say `ComfyUI/models/prompt_generator/LLM/Qwen-VL/Qwen3-VL-4B-Instruct` and `ComfyUI/models/prompt_generator/Qwen3-VL-4B-Instruct` respectively.
-
-### 4.3 Under `loras` folder
-Download `F2K_9bb-一致性consist_20260225.safetensors` and `F2K_9b-破KLEIN-Unchained-V2.safetensors`(optionally) and put it under, say `ComfyUI/models/loras/F2K_9bb-一致性consist_20260225.safetensors`(https://huggingface.co/weiqiang1978/Flux2Klein_Consistance_Edit_Lora)
-
-### 4.4 Under `sam3` folder 
-If the folder doesn't exist, please create it first.
-Doenload `sam3.1_multiplex_fp16.safetensors`(https://huggingface.co/Comfy-Org/sam3.1) and put it under the folder.
-
-### 4.5 Under `text_encoders` folder 
-Download `qwen_3_8b_fp8mixed.safetensors`(https://huggingface.co/Comfy-Org/vae-text-encorder-for-flux-klein-9b) and put it under the folder.
-
-### 4.6 Under `vae` folder 
-Doanload `flux2-vae.safetensors`(https://huggingface.co/Comfy-Org/flux2-dev) and put it under the folder.
-
-## 3. Run
-For Terminal 1 (Run the task, start by `ssh dsaa2012_017@hpc2login.hpc.hkust-gz.edu.cn`)
 ```bash
-srun -p debug -n 8 --mem=32G --gres=gpu:1 --time=00:30:00 --pty bash
-hostname   # 记住这个，比如 gpu3-9
-cd path/conating/run_gpu.sh
-chmod +x run_gpu.sh
-./run_gpu.sh
-# or run it at the back
-nohup ./run_gpu.sh 2>&1 &
-# exit
-pkill -f run_gpu.sh
+mkdir -p ComfyUI/models/diffusion_models/flux-2-klein
 ```
-For Terminal 2 (For port, start by `ssh -L 18188:{host_name}:8188 dsaa2012_017@hpc2login.hpc.hkust-gz.edu.cn`)
-Then open `http://localhost:18188` in local browser.
+
+Required default checkpoint:
+
+```text
+ComfyUI/models/diffusion_models/flux-2-klein/Flux2-Klein-9B-True-v2-bf16.safetensors
+```
+
+Source:
+
+<https://huggingface.co/wikeeyang/Flux2-Klein-9B-True-V2>
+
+An alternative checkpoint used during experimentation is:
+
+```text
+ComfyUI/models/diffusion_models/flux-2-klein/F2K-9b-miracleinNSFWGeneration_10Fp8.safetensors
+```
+
+Source:
+
+<https://civitai.com/models/2453960/miraclein-nsfw-generation-and-edit-flux2klein>
+
+The default workflow uses `Flux2-Klein-9B-True-v2-bf16.safetensors`. Any use of alternative checkpoints should follow the checkpoint license, platform policy, and project safety constraints.
+
+### 4.2 Visual-Language Model
+
+Download Qwen3-VL-4B-Instruct:
+
+<https://huggingface.co/Qwen/Qwen3-VL-4B-Instruct>
+
+Place the model in the directories expected by the installed Qwen nodes:
+
+```text
+ComfyUI/models/LLM/Qwen-VL/Qwen3-VL-4B-Instruct
+ComfyUI/models/prompt_generator/LLM/Qwen-VL/Qwen3-VL-4B-Instruct
+ComfyUI/models/prompt_generator/Qwen3-VL-4B-Instruct
+```
+
+### 4.3 LoRA Checkpoints
+
+Required LoRA:
+
+```text
+ComfyUI/models/loras/F2K_9bb-一致性consist_20260225.safetensors
+```
+
+Source:
+
+<https://huggingface.co/weiqiang1978/Flux2Klein_Consistance_Edit_Lora>
+
+Optional experimental LoRA:
+
+```text
+ComfyUI/models/loras/F2K_9b-破KLEIN-Unchained-V2.safetensors
+```
+
+### 4.4 SAM3.1
+
+Create the SAM model directory and place the checkpoint there:
+
+```text
+ComfyUI/models/sam3/sam3.1_multiplex_fp16.safetensors
+```
+
+Source:
+
+<https://huggingface.co/Comfy-Org/sam3.1>
+
+### 4.5 Text Encoder
+
+Required Flux2 text encoder:
+
+```text
+ComfyUI/models/text_encoders/qwen_3_8b_fp8mixed.safetensors
+```
+
+Source:
+
+<https://huggingface.co/Comfy-Org/vae-text-encorder-for-flux-klein-9b>
+
+### 4.6 VAE
+
+Required VAE:
+
+```text
+ComfyUI/models/vae/flux2-vae.safetensors
+```
+
+Source:
+
+<https://huggingface.co/Comfy-Org/flux2-dev>
+
+## 5. Launch ComfyUI on HPC2
+
+Start an interactive GPU session:
+
+```bash
+ssh dsaa2012_017@hpc2login.hpc.hkust-gz.edu.cn
+srun -p debug -n 8 --mem=32G --gres=gpu:1 --time=00:30:00 --pty bash
+hostname
+```
+
+Record the allocated compute hostname, for example `gpu3-9`.
+
+Launch ComfyUI on the compute node:
+
+```bash
+cd /hpc2hdd/home/dsaa2012_017/comfyui/ComfyUI
+source /hpc2hdd/home/dsaa2012_017/miniconda3/bin/activate py_312
+module load cuda/12.8
+python main.py --listen 0.0.0.0 --port 8188 --preview-method auto --enable-manager
+```
+
+From a local terminal, create an SSH tunnel through the login node:
+
+```bash
+ssh -L 18188:{compute_hostname}:8188 dsaa2012_017@hpc2login.hpc.hkust-gz.edu.cn
+```
+
+Open the ComfyUI interface at:
+
+```text
+http://localhost:18188
+```
+
+Load `workflows_local/whole_workflow.json` for local execution or `workflows/whole_workflow_runninghub.json` for the RunningHUB-compatible graph.
+
+## 6. Batch Execution
+
+The repository includes Slurm helper scripts for the HPC2 setup:
+
+```bash
+cd workflows_local
+bash submit_vton_batch.sh
+PERSON_IDX=0 CLOTH_START=0 CLOTH_END=15 bash submit_vton_single.sh
+bash submit_multiview_batch.sh
+```
+
+Use dry-run mode to inspect generated Slurm scripts without submitting jobs:
+
+```bash
+DRY_RUN=1 bash submit_vton_batch.sh
+DRY_RUN=1 PERSON_IDX=0 CLOTH_START=0 CLOTH_END=15 bash submit_vton_single.sh
+DRY_RUN=1 bash submit_multiview_batch.sh
+```
+
+These scripts contain HPC2-specific paths and dataset assumptions. Before using them on another account or cluster, update `COMFYUI_ROOT`, input-folder names, output-folder names, and Conda activation paths in the corresponding Python and shell scripts.

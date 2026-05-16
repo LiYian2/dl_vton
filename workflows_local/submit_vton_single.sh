@@ -110,7 +110,7 @@ fi
 
 cd /hpc2hdd/home/dsaa2012_017/comfyui || exit 1
 echo "$(date): Running VTON batch: person=${PERSON_IDX}, cloth=${CLOTH_START}-${CLOTH_END}"
-python run_vton_batch_copy.py
+python run_vton_batch.py
 
 echo "$(date): Monitoring ComfyUI queue..."
 TASK_COMPLETE=false
