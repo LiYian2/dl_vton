@@ -99,24 +99,27 @@ If you encounter packages error, you may refer to our [environment.yml](environm
 
 ### 4.1 Under `diffusion_models` folder
 Download flux-2-klein checkpoints under ComfyUI/models/flux-2-klein/ . Say `ComfyUI/models/diffusion_models/flux-2-klein/F2K-9b-darkBeast_dbkBlitzV15_fp8.safetensors`
-For flux-2-klein models, you need to download `Flux2-Klein-9B-True-v2-bf16.safetensors` and `F2K-9b-miracleinNSFWGeneration_10Fp8.safetensors`.
+For flux-2-klein models, you need to download `Flux2-Klein-9B-True-v2-bf16.safetensors`(https://huggingface.co/wikeeyang/Flux2-Klein-9B-True-V2) and `F2K-9b-miracleinNSFWGeneration_10Fp8.safetensors`(https://civitai.com/models/2453960/miraclein-nsfw-generation-and-edit-flux2klein).
+
+In default, we use `Flux2-Klein-9B-True-v2-bf16.safetensors` throughout our workflow. However, `F2K-9b-miracleinNSFWGeneration_10Fp8.safetensors` perform better in character neutralization. We encourage you to have a try but please do not do anything nasty.
+
 
 ### 4.2 Under `LLM/Qwen-VL` folder
-Download Qwen3-VL-4B-instrcut and put it under the folder, say `ComfyUI/models/LLM/Qwen-VL/Qwen3-VL-4B-Instruct`
+Download [Qwen3-VL-4B-instrcut](https://huggingface.co/Qwen/Qwen3-VL-4B-Instruct) and put it under the folder, say `ComfyUI/models/LLM/Qwen-VL/Qwen3-VL-4B-Instruct`
 Put this also under in `ComfyUI/models/prompt_generator/LLM/Qwen-VL/` and `ComfyUI/models/prompt_generator/`, say `ComfyUI/models/prompt_generator/LLM/Qwen-VL/Qwen3-VL-4B-Instruct` and `ComfyUI/models/prompt_generator/Qwen3-VL-4B-Instruct` respectively.
 
 ### 4.3 Under `loras` folder
-Download `F2K_9bb-一致性consist_20260225.safetensors` and `F2K_9b-破KLEIN-Unchained-V2.safetensors`(optionally) and put it under, say `ComfyUI/models/loras/F2K_9bb-一致性consist_20260225.safetensors`
+Download `F2K_9bb-一致性consist_20260225.safetensors` and `F2K_9b-破KLEIN-Unchained-V2.safetensors`(optionally) and put it under, say `ComfyUI/models/loras/F2K_9bb-一致性consist_20260225.safetensors`(https://huggingface.co/weiqiang1978/Flux2Klein_Consistance_Edit_Lora)
 
 ### 4.4 Under `sam3` folder 
 If the folder doesn't exist, please create it first.
-Doenload `sam3.1_multiplex_fp16.safetensors` and put it under the folder.
+Doenload `sam3.1_multiplex_fp16.safetensors`(https://huggingface.co/Comfy-Org/sam3.1) and put it under the folder.
 
 ### 4.5 Under `text_encoders` folder 
-Download `qwen_3_8b_fp8mixed.safetensors` and put it under the folder.
+Download `qwen_3_8b_fp8mixed.safetensors`(https://huggingface.co/Comfy-Org/vae-text-encorder-for-flux-klein-9b) and put it under the folder.
 
 ### 4.6 Under `vae` folder 
-Doanload `flux2-vae.safetensors` and put it under the folder.
+Doanload `flux2-vae.safetensors`(https://huggingface.co/Comfy-Org/flux2-dev) and put it under the folder.
 
 ## 3. Run
 For Terminal 1 (Run the task, start by `ssh dsaa2012_017@hpc2login.hpc.hkust-gz.edu.cn`)
