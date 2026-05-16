@@ -2,7 +2,12 @@
 
 This repository contains a ComfyUI-based virtual try-on pipeline for garment-conditioned image editing. Given a target garment image and a person/character reference or prompt, the workflow generates a dressed character image while attempting to preserve person identity, body structure, and non-clothing regions. The project also includes an exploratory multi-view generation workflow for producing alternative viewing angles from a generated single-view result. The project was developed for local/HPC experimentation and for deployment on RunningHUB. The local workflows expose more debugging and multi-view functionality, while the RunningHUB workflow is simplified for online execution. 
 
-## Group Members - Weifeng Chen - Yuk Yeung Wong - Boyi Zhang ## Repository Layout 
+## Group Members 
+- Weifeng Chen
+- Yuk Yeung Wong
+- Boyi Zhang
+
+## Repository Layout 
 ```text . 
 ├── Install.md # Detailed installation and HPC2 running instructions
 ├── environment.yml # Conda environment export used during development
